@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messages</title>
+
+        <!--jQuery UI CSS-->
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
+        <!--jQuery and jQuery UI with jQuery Chat-->
+        <script type="text/javascript" src="jquery-1.8.3.js"></script>
+        <script type="text/javascript" src="jquery-ui.js"></script>
+        <link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
+        <script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+
+        <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            box = $("#chat_div").chatbox( {
+                id:"Me",
+                user:
+                    {
+                        key : "value"
+                    },
+                title : "Messages to Doc Brown",
+                right_offset: 20, // relative to the right of the screen
+                bottom_offset: 20, // relative to the bottom of the browser window
+                /*
+                    messageSend as name suggest,
+                    this will called when message sent.
+                    and for demo we have appended sent message to our log div.
+                */
+                messageSent : function(id, user, msg) {
+                    // $("#log").append(id + " said: " + msg + "<br/>");
+                    $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                }
+            });
+        });
+
+        </script>
+    </head>
+
+    <body>
+        <!--Chat box will be generated in this container-->
+        <div id="chat_div"></div>
+
+
+
+        <div id="log"></div>
+    </body>
+</html>
