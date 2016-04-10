@@ -4,64 +4,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-}
+    * {
+        box-sizing: border-box;
+        margin: 0;
+    }
 
-html, body {
-    height: 100%;
-    font-family: "Lucida Sans", sans-serif;
-}
+    html, body {
+        height: 100%;
+        font-family: "Lucida Sans", sans-serif;
+    }
 
-body {
-    display: flex;
-    flex-direction: column;
-}
+    body {
+        display: flex;
+        flex-direction: column;
+    }
 
-.header {
-    background-color: #40e0d0;
-    color: #ffffff;
-    padding: 5px;
-}
+    .header {
+        background-color: #40e0d0;
+        color: #ffffff;
+        padding: 5px;
+    }
 
-.top {
-    flex: 3;
-    background: orange;
-}
+    .top {
+        flex: 3;
+        background: orange;
+        display: flex;
+        flex-direction: row;
+    }
 
-.left {
-    width: 75%;
-    background: red;
-}
+    .bottom {
+        flex: 1;
+        background: cyan;
+        display: flex;
+        flex-direction: row;
+    }
 
-.right {
-    width: 25%;
-    background: blue;
-}
+    .left {
+        flex: 3;
+        background: hotpink;
+    }
 
-.bottom {
-    flex: 1;
-    background: cyan;
-}
-
-.left, .right {
-    float: left;
-    padding: 5px;
-    height: 100%;
-}
-
-.left {
-    width: 75%;
-    background: hotpink;
-}
-
-.right {
-    width: 25%;
-    background: yellow;
-}
+    .right {
+        position: relative;
+        flex: 1;
+        background: yellow;
+    }
 
 </style>
+
+<!--jQuery UI CSS-->
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
+<!--jQuery and jQuery UI with jQuery Chat-->
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<script type="text/javascript" src="jquery-ui.js"></script>
+<link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
+<script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        box = $("#chat_div").chatbox( {
+            id:"Me",
+            user:
+                {
+                    key : "value"
+                },
+            title : "Messages to Doc Brown",
+            // right_offset: 0, // relative to the right of the screen
+            // bottom_offset: 0, // relative to the bottom of the browser window
+
+            // called when message sent. and for demo we have appended sent message to our log div.
+            messageSent : function(id, user, msg) {
+                // $("#log").append(id + " said: " + msg + "<br/>");
+                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+            }
+        });
+    });
+
+</script>
 </head>
 <body>
 
@@ -70,12 +91,12 @@ body {
 </div>
 
 <div class="top">
-    <div class="left">
+    <div class="left" style="background: red">
     <!-- TODO: Calendar here -->
     </div>
 
-    <div class="right">
-    <!-- TODO: Messages here -->
+    <div id="messages" class="right">
+        <div id="chat_div"></div>
     </div>
 
 </div>
@@ -85,7 +106,7 @@ body {
     <!-- TODO: Strip here -->
     </div>
 
-    <div class="right">
+    <div class="right" style="background: blue">
     <!-- TODO: Rewards here -->
     </div>
 </div>

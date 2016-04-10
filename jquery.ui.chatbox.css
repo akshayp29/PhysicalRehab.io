@@ -1,13 +1,17 @@
 .ui-chatbox {
-    position: fixed;
-    /*bottom:0;*/
-    padding: 2px;
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 100%;
     background:  #CCCCCC;
+    display: flex;
+    flex-direction: column;
 }
 
 .ui-chatbox-titlebar {
     cursor: context-menu;
-    height: 35px;
+    flex: 1;
+    width: 100%;
     line-height: 35px;
     font-weight: normal;
     text-align: center;
@@ -15,35 +19,40 @@
 }
 
 .ui-chatbox-content {
+    width: 100%;
+    flex: 11;
     padding: 0px;
     margin: 0px;
     border: 0px;
+    display: flex;
+    flex-direction: column;
 }
 
 .ui-chatbox-log {
     padding: 3px;
-    height: 250px;
+    flex: 11;
     overflow-y: auto;
     overflow-x: hidden;
     background: #FFFFFF;
 }
 
 .ui-chatbox-input {
+    /*position: relative;*/
+    flex: 2;
     padding: 3px;
+    width: 100%;
     border-top: 1px solid grey;
     overflow: hidden;
 }
 
 .ui-chatbox-input-box {
-    margin: 5px;
+    /*position: absolute;*/
+    margin: 4px;
+    width: 95%;
     font-size: 12px !important;
     border: 2px solid lightgrey;/* #6699FF */
     padding: 2px;
-    height: 50px;
-}
-
-.ui-chatbox-icon {
-    float: left;
+    height: 90%;
 }
 
 .ui-chatbox-input-focus {
@@ -59,5 +68,5 @@
     white-space: -pre-wrap;     /* Opera <7 */
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
-    font-size:12px;
+    font-size: 12px;
 }

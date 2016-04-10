@@ -7,10 +7,9 @@
             id: null, //id for the DOM element
             title: null, // title of the chatbox
             user: null, // can be anything associated with this chatbox
-            hidden: false,
-            right_offset: 0, // relative to right edge of the browser window
-            bottom_offset: 0, // relative to the bottom edge of the browser window
-            width: 300, // width of the chatbox
+            // right_offset: 0, // relative to right edge of the browser window
+            // bottom_offset: 0, // relative to the bottom edge of the browser window
+            // width: 210, // width of the chatbox
 
             messageSent: function(id, user, msg) {
                 this.boxManager.addMsg(user.first_name, msg);
@@ -46,19 +45,8 @@
                     $(e).fadeIn();
                     self._scrollToBottom();
 
-                    // if (!self.elem.uiChatboxTitlebar.hasClass("ui-state-focus") && !self.highlightLock) {
-                    //     self.highlightLock = true;
-                    //     self.highlightBox();
-                    // }
                 },
-                // highlightBox: function() {
-                //     var self = this;
-                //     self.elem.uiChatboxTitlebar.effect("highlight", {}, 300);
-                //     self.elem.uiChatbox.effect("bounce", {times: 3}, 300, function() {
-                //         self.highlightLock = false;
-                //         self._scrollToBottom();
-                //     });
-                // },
+
                 _scrollToBottom: function() {
                     var box = this.elem.uiChatboxLog;
                     box.scrollTop(box.get(0).scrollHeight);
@@ -76,7 +64,7 @@
 
             // Chatbox
             uiChatbox = (self.uiChatbox = $('<div></div>'))
-                .appendTo(document.body)
+                .appendTo($( '#messages' ))
                 .addClass('ui-widget ' +
                           'ui-corner-top ' +
                           'ui-chatbox'
@@ -145,34 +133,11 @@
                 self.uiChatboxInputBox.focus();
             });
 
-            self._setWidth(self.options.width);
-            self._position(self.options.right_offset, self.options.bottom_offset);
+            // self._setWidth(self.options.width);
+            // self._position(self.options.right_offset, self.options.bottom_offset);
 
             self.options.boxManager.init(self);
-
-            if (!self.options.hidden) {
-                uiChatbox.show();
-            }
         },
-        // _setOption: function(option, value) {
-        //     if (value != null) {
-        //         switch (option) {
-        //         case "hidden":
-        //             if (value)
-        //                 this.uiChatbox.hide();
-        //             else
-        //                 this.uiChatbox.show();
-        //             break;
-        //         case "offset":
-        //             this._position(value);
-        //             break;
-        //         case "width":
-        //             this._setWidth(value);
-        //             break;
-        //         }
-        //     }
-        //     $.Widget.prototype._setOption.apply(this, arguments);
-        // },
 
         _setWidth: function(width) {
             this.uiChatboxTitlebar.width(width + "px");
@@ -182,8 +147,8 @@
         },
 
         _position: function(right_offset, bottom_offset) {
-            this.uiChatbox.css("right", right_offset);
-            this.uiChatbox.css("bottom", bottom_offset);
+            // this.uiChatbox.css("left", right_offset);
+            // this.uiChatbox.css("bottom", bottom_offset);
 
         }
     });
