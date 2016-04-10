@@ -46,12 +46,12 @@ body .fc { /* extra precedence to overcome jqui */
 }
 
 .fc-unthemed .fc-today {
-	background: #fcf8e3;
+	background: #f8f8c0;
 }
 
 .fc-highlight { /* when user is selecting cells */
-	background: #bce8f1;
-	opacity: .3;
+	background: #acd8ff; /*#bce8f1;*/
+	opacity: .5;
 	filter: alpha(opacity=30); /* for IE */
 }
 
