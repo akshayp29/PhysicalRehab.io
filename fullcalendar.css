@@ -815,7 +815,7 @@ a.fc-more:hover {
 }
 
 .fc-ltr .fc-basic-view .fc-day-number {
-	text-align: right;
+	text-align: left;
 }
 
 .fc-rtl .fc-basic-view .fc-day-number {

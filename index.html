@@ -54,11 +54,15 @@
 
 <!--jQuery UI CSS-->
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
+<!-- FullCalendar styles-->
+<link rel="stylesheet" href="fullcalendar.css" />
 <!--jQuery and jQuery UI with jQuery Chat-->
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="jquery-ui.js"></script>
 <link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
 <script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+<script src='moment.js'></script>
+<script src='fullcalendar.js'></script>
 
 <script type="text/javascript">
 
@@ -80,6 +84,43 @@
                 $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
             }
         });
+		
+		// calendar
+		cannedEvents = []
+		for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+			cannedEvents.push({
+				title: "Stand on right foot",
+				start: m.format('YYYY-MM-DD')
+			});
+				
+			if (m.day() % 2 == 1){
+				cannedEvents.push({
+					title: "Push-ups",
+					start: m.format('YYYY-MM-DD')
+				});
+			}
+		}
+	
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev',
+				center: 'title',
+				right: 'today next'
+			},
+			height: $('#calendar').height(),
+			events: cannedEvents,
+			dayClick: function(date, jsEvent, view){
+				$('#calendar').fullCalendar('select', date);
+			},
+			eventClick: function(calEvent, jsEvent, view) {
+				// pull up activity page for selected event (probably canned)
+			},
+			editable: false
+		});
+		
+		$(window).resize(function() {
+			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
+		  });
     });
 
 </script>
@@ -91,8 +132,9 @@
 </div>
 
 <div class="top">
-    <div class="left" style="background: red">
+    <div id="calendar" class="left" style="background: #F2F2F2">
     <!-- TODO: Calendar here -->
+		
     </div>
 
     <div id="messages" class="right">
