@@ -19,21 +19,22 @@
         display: flex;
         flex-direction: column;
     }
-	
-	.title {
+
+	.rewards {
         color: #ffffff;
         padding: 5px;
+        margin: 5px;
 		font-size: 150%;
 		position: absolute;
     }
 
-    .header {
+    .page_title {
         background-color: #40e0d0;
         color: #ffffff;
         padding: 5px;
     }
 
-    .header-text {
+    .page_title_text {
 	    font-size: 22pt;
 	    margin-left: 5px;
 	    margin-right: 0;
@@ -159,24 +160,28 @@
 
 <script type="text/javascript">
 
-  //call this to tick the rewards progress bar
-  function RewardsTick() {
-    var curWidth = $('#ProgressBar').width();
-    var newWidth = Math.min(curWidth+100, 300);
+    //call this to tick the rewards progress bar
+    function RewardsTick() {
+        var curWidth = $('#ProgressBar').width();
+        var newWidth = Math.min(curWidth+100, 300);
 
-    var id = setInterval(frame, 10);
-    function frame() {
-      if (curWidth >= newWidth) {
-        clearInterval(id);
-      } else {
-        curWidth++;
-        $("#ProgressBar").width(curWidth);
-      }
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (curWidth >= newWidth) {
+                clearInterval(id);
+            } else {
+                curWidth++;
+                $("#ProgressBar").width(curWidth);
+            }
+        }
     }
-  }
 
-  $(document).ready(function() {
+    function sendMessageDocToPatient(name, message) {
+        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
+    }
 
+    $(document).ready(function() {
+        var numberOfMessages = 0;
         box = $("#chat_div").chatbox( {
             id:"Me",
             user:
@@ -187,57 +192,63 @@
             // right_offset: 0, // relative to the right of the screen
             // bottom_offset: 0, // relative to the bottom of the browser window
 
-            // called when message sent. and for demo we have appended sent message to our log div.
             messageSent : function(id, user, msg) {
-                // $("#log").append(id + " said: " + msg + "<br/>");
                 $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                numberOfMessages += 1;
+                if (numberOfMessages == 1) {
+                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
+                }
+
             }
         });
+        if (numberOfMessages == 0) {
+            sendMessageDocToPatient("Doc Brown", "How's the training going?");
+        }
 
-    // calendar
-    cannedEvents = []
-    for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
-      cannedEvents.push({
-        title: "Stand on right foot",
-        start: m.format('YYYY-MM-DD')
-      });
+        // calendar
+        cannedEvents = []
+        for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+            cannedEvents.push({
+                title: "Stand on right foot",
+                start: m.format('YYYY-MM-DD')
+            });
 
-      if (m.day() % 2 == 1){
-        cannedEvents.push({
-          title: "Push-ups",
-          start: m.format('YYYY-MM-DD')
+            if (m.day() % 2 == 1){
+                cannedEvents.push({
+                    title: "Push-ups",
+                    start: m.format('YYYY-MM-DD')
+                });
+            }
+        }
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title',
+                right: 'today next'
+            },
+            height: $('#calendar').height(),
+            events: cannedEvents,
+            dayClick: function(date, jsEvent, view){
+                $('#calendar').fullCalendar('select', date);
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+                // pull up activity page for selected event (probably canned)
+            },
+            editable: false
         });
-      }
-    }
 
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev',
-        center: 'title',
-        right: 'today next'
-      },
-      height: $('#calendar').height(),
-      events: cannedEvents,
-      dayClick: function(date, jsEvent, view){
-        $('#calendar').fullCalendar('select', date);
-      },
-      eventClick: function(calEvent, jsEvent, view) {
-        // pull up activity page for selected event (probably canned)
-      },
-      editable: false
-    });
-
-    $(window).resize(function() {
-      $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
-      });
+        $(window).resize(function() {
+            $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
+        });
     });
 
 </script>
 </head>
 <body>
 
-<div class="header" height="100%">
-    <p class="header-text">PhysicalRehab.io</p>
+<div class="page_title" height="100%">
+    <p class="page_title_text">PhysicalRehab.io</p>
 </div>
 
 <div class="top">
@@ -278,7 +289,7 @@
     </div>
 
   <div class="right" style="background: blue" align="center">
-      <p class="title">Rewards</p>
+      <p class="rewards">Rewards</p>
       <div id="ProgressBG">
       <div id="ProgressBar"></div>
     </div>

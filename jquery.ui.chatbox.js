@@ -82,7 +82,7 @@
                 .appendTo(uiChatbox),
 
             uiChatboxTitle = (self.uiChatboxTitle = $('<span></span>'))
-                .css("fontSize", "16x")
+                .addClass('ui-chatbox-title')
                 .html(title)
                 .appendTo(uiChatboxTitlebar),
 
