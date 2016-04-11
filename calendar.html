@@ -14,13 +14,40 @@
 		<script src='fullcalendar.js'></script>
         <script type="text/javascript">
 
+		
         $(document).ready(function() {
 
-            $('#calendar').fullCalendar({
-				dayClick: function(){
-					
+			cannedEvents = []
+			for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+				cannedEvents.push({
+					title: "Stand on right foot",
+					start: m.format('YYYY-MM-DD')
+				});
+				
+				if (m.day() % 2 == 1){
+					cannedEvents.push({
+						title: "Push-ups",
+						start: m.format('YYYY-MM-DD')
+					});
 				}
-			
+				
+			}
+		
+            $('#calendar').fullCalendar({
+				header: {
+					left: 'prev',
+					center: 'title',
+					right: 'today next'
+				},
+				events: cannedEvents,
+				dayClick: function(date, jsEvent, view){
+					$('#calendar').fullCalendar('select', date);
+				},
+				eventClick: function(calEvent, jsEvent, view) {
+					// pull up activity page for selected event (probably canned)
+
+				}
+				editable: false
 			});
         });
 
