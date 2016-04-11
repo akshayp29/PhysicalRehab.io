@@ -17,6 +17,13 @@
     body {
         display: flex;
         flex-direction: column;
+    }	
+	
+	.title {
+        color: #ffffff;
+        padding: 5px;
+		font-size: 150%;
+		position:absolute;
     }
 
     .header {
@@ -48,7 +55,24 @@
         position: relative;
         flex: 1;
         background: yellow;
+		display:flex;
     }
+	
+	#ProgressBG {
+	  margin:auto;
+	  position: relative;
+	  width: 300px;
+	  height: 30px;
+	  background-color: darkgray;
+	  align-self: center;
+	}
+
+	#ProgressBar {
+	  position: absolute;
+	  width: 3px;
+	  height: 100%;
+	  background-color: magenta;
+	}
 
 </style>
 
@@ -66,7 +90,23 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
+	//call this to tick the rewards progress bar
+	function RewardsTick() {
+		var curWidth = $('#ProgressBar').width();
+		var newWidth = Math.min(curWidth+100, 300);
+
+		var id = setInterval(frame, 10);
+		function frame() {
+			if (curWidth >= newWidth) {
+				clearInterval(id);
+			} else {
+				curWidth++; 
+				$("#ProgressBar").width(curWidth);
+			}
+		}			
+	}
+	
+	$(document).ready(function() {
 
         box = $("#chat_div").chatbox( {
             id:"Me",
@@ -148,8 +188,11 @@
     <!-- TODO: Strip here -->
     </div>
 
-    <div class="right" style="background: blue">
-    <!-- TODO: Rewards here -->
+<div class="right" style="background: blue" align="center">
+    <p class="title">Rewards</p>
+    <div id="ProgressBG">
+		<div id="ProgressBar"></div>
+	</div>
     </div>
 </div>
 
