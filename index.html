@@ -89,22 +89,24 @@
         background:#A3CBE0;
         border:2px solid #000;
         overflow:auto;
-        white-space:nowrap;
+        overflow-y: hidden;
+        /*white-space:nowrap;*/
         box-shadow:0 0 10px #000;
-        display:flex;
-        flex-direction: column;
-        flex-wrap: wrap;
+        /*display:flex;*/
+        /*flex-direction: column;*/
+        /*flex-wrap: wrap;*/
     }
 
     .card {
         display: inline-block;
-        width: 20%;
-        height: 80%;
-        color:#fff!important;
-        background-color:#616161!important;
+        padding: 5px;
+        width: 170px;
+        color: #fff!important;
+        background-color: #616161!important;
         margin: 16px!important;
-        text-align:center!important;
-        flex: 1;
+        text-align: center!important;
+        /*flex: 1;*/
+        height: 100%;
     }
 
     .green {
@@ -135,13 +137,12 @@
 
     .button:hover {
         box-shadow:0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-        font-weight: bold;
+        /*font-weight: bold;*/
     }
 
     .card_heading {
-        margin: 2px;
-        font-size: 18px;
-        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 16px;
     }
 
 </style>
@@ -265,26 +266,19 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="width:80%; height: 50%">
-
-                <p>
-                    <button class="button green">Accept</button>
-                    <button class="button red">Decline</button>
-                </p>
+                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:58%; max-height: 100%">
+				<br>
+                <button class="button green">Accept</button>
+                <button class="button red">Decline</button>
             </div>
 
-           <!--  <div class="card">
-                <div class="card_container">
-                    <p class="card_heading">Jumping Jacks</p>
-                    <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="width:80%; height: 50%">
-
-                    <p>
-                        <button class="button green">Accept</button>
-                        <button class="button red">Decline</button>
-                    </p>
-                </div>
-            </div> -->
-
+            <div class="card">
+                <p class="card_heading">Jumping Jacks</p>
+                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:58%; max-height: 100%">
+				<br>
+                <button class="button green">Accept</button>
+                <button class="button red">Decline</button>
+            </div>
         </div>
     </div>
 
