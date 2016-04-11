@@ -17,13 +17,13 @@
     body {
         display: flex;
         flex-direction: column;
-    }	
-	
-	.title {
+    }
+
+  .title {
         color: #ffffff;
         padding: 5px;
-		font-size: 150%;
-		position:absolute;
+        font-size: 150%;
+        position:absolute;
     }
 
     .header {
@@ -34,45 +34,106 @@
 
     .top {
         flex: 3;
-        background: orange;
         display: flex;
         flex-direction: row;
     }
 
     .bottom {
         flex: 1;
-        background: cyan;
         display: flex;
         flex-direction: row;
     }
 
-    .left {
+    .left, .bottom-left {
+        position: relative;
         flex: 3;
-        background: hotpink;
+    }
+
+    .bottom-left {
+        display:flex;
     }
 
     .right {
         position: relative;
         flex: 1;
-        background: yellow;
-		display:flex;
+        display:flex;
     }
-	
-	#ProgressBG {
-	  margin:auto;
-	  position: relative;
-	  width: 300px;
-	  height: 30px;
-	  background-color: darkgray;
-	  align-self: center;
-	}
 
-	#ProgressBar {
-	  position: absolute;
-	  width: 3px;
-	  height: 100%;
-	  background-color: magenta;
-	}
+    #ProgressBG {
+        margin:auto;
+        position: relative;
+        width: 300px;
+        height: 30px;
+        background-color: darkgray;
+        align-self: center;
+    }
+
+    #ProgressBar {
+        position: absolute;
+        width: 3px;
+        height: 100%;
+        background-color: magenta;
+    }
+
+    #scroll {
+        flex: 1;
+        background:#A3CBE0;
+        border:2px solid #000;
+        overflow:auto;
+        white-space:nowrap;
+        box-shadow:0 0 10px #000;
+        display:flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        display: inline-block;
+        width: 20%;
+        height: 80%;
+        color:#fff!important;
+        background-color:#616161!important;
+        margin: 16px!important;
+        text-align:center!important;
+        flex: 1;
+    }
+
+    .green {
+        color:#fff!important;
+        background-color:#4CAF50!important
+    }
+
+    .red {
+        color:#fff!important;
+        background-color:#f44336!important
+    }
+
+    .button {
+        border:none;
+        display:inline-block;
+        outline:0;
+        padding:6px 16px;
+        margin: 5px 4px;
+        vertical-align:middle;
+        overflow:hidden;
+        text-decoration:none!important;
+        color:#fff;
+        background-color:#000;
+        text-align:center;
+        cursor:pointer;
+        white-space:nowrap
+    }
+
+    .button:hover {
+        box-shadow:0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        font-weight: bold;
+    }
+
+    .card_heading {
+        margin: 2px;
+        font-size: 18px;
+        font-weight: bold;
+    }
 
 </style>
 
@@ -90,23 +151,23 @@
 
 <script type="text/javascript">
 
-	//call this to tick the rewards progress bar
-	function RewardsTick() {
-		var curWidth = $('#ProgressBar').width();
-		var newWidth = Math.min(curWidth+100, 300);
+  //call this to tick the rewards progress bar
+  function RewardsTick() {
+    var curWidth = $('#ProgressBar').width();
+    var newWidth = Math.min(curWidth+100, 300);
 
-		var id = setInterval(frame, 10);
-		function frame() {
-			if (curWidth >= newWidth) {
-				clearInterval(id);
-			} else {
-				curWidth++; 
-				$("#ProgressBar").width(curWidth);
-			}
-		}			
-	}
-	
-	$(document).ready(function() {
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (curWidth >= newWidth) {
+        clearInterval(id);
+      } else {
+        curWidth++;
+        $("#ProgressBar").width(curWidth);
+      }
+    }
+  }
+
+  $(document).ready(function() {
 
         box = $("#chat_div").chatbox( {
             id:"Me",
@@ -124,43 +185,43 @@
                 $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
             }
         });
-		
-		// calendar
-		cannedEvents = []
-		for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
-			cannedEvents.push({
-				title: "Stand on right foot",
-				start: m.format('YYYY-MM-DD')
-			});
-				
-			if (m.day() % 2 == 1){
-				cannedEvents.push({
-					title: "Push-ups",
-					start: m.format('YYYY-MM-DD')
-				});
-			}
-		}
-	
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev',
-				center: 'title',
-				right: 'today next'
-			},
-			height: $('#calendar').height(),
-			events: cannedEvents,
-			dayClick: function(date, jsEvent, view){
-				$('#calendar').fullCalendar('select', date);
-			},
-			eventClick: function(calEvent, jsEvent, view) {
-				// pull up activity page for selected event (probably canned)
-			},
-			editable: false
-		});
-		
-		$(window).resize(function() {
-			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
-		  });
+
+    // calendar
+    cannedEvents = []
+    for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+      cannedEvents.push({
+        title: "Stand on right foot",
+        start: m.format('YYYY-MM-DD')
+      });
+
+      if (m.day() % 2 == 1){
+        cannedEvents.push({
+          title: "Push-ups",
+          start: m.format('YYYY-MM-DD')
+        });
+      }
+    }
+
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev',
+        center: 'title',
+        right: 'today next'
+      },
+      height: $('#calendar').height(),
+      events: cannedEvents,
+      dayClick: function(date, jsEvent, view){
+        $('#calendar').fullCalendar('select', date);
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+        // pull up activity page for selected event (probably canned)
+      },
+      editable: false
+    });
+
+    $(window).resize(function() {
+      $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
+      });
     });
 
 </script>
@@ -173,26 +234,46 @@
 
 <div class="top">
     <div id="calendar" class="left" style="background: #F2F2F2">
-    <!-- TODO: Calendar here -->
-		
     </div>
 
     <div id="messages" class="right">
         <div id="chat_div"></div>
     </div>
-
 </div>
 
 <div class="bottom">
-    <div class="left">
-    <!-- TODO: Strip here -->
+    <div class="bottom-left">
+        <div id="scroll">
+            <div class="card">
+                <p class="card_heading">Jumping Jacks</p>
+                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="width:80%; height: 50%">
+
+                <p>
+                    <button class="button green">Accept</button>
+                    <button class="button red">Decline</button>
+                </p>
+            </div>
+
+           <!--  <div class="card">
+                <div class="card_container">
+                    <p class="card_heading">Jumping Jacks</p>
+                    <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="width:80%; height: 50%">
+
+                    <p>
+                        <button class="button green">Accept</button>
+                        <button class="button red">Decline</button>
+                    </p>
+                </div>
+            </div> -->
+
+        </div>
     </div>
 
-<div class="right" style="background: blue" align="center">
-    <p class="title">Rewards</p>
-    <div id="ProgressBG">
-		<div id="ProgressBar"></div>
-	</div>
+  <div class="right" style="background: blue" align="center">
+      <p class="title">Rewards</p>
+      <div id="ProgressBG">
+      <div id="ProgressBar"></div>
+    </div>
     </div>
 </div>
 

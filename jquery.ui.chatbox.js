@@ -104,7 +104,7 @@
                          )
                 .appendTo(uiChatboxContent),
 
-            uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea></textarea>'))
+            uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea placeholder="Press Enter to send"></textarea>'))
                 .addClass('ui-widget-content ' +
                           'ui-chatbox-input-box ' +
                           'ui-corner-all'
