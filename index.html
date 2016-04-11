@@ -2,34 +2,42 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 <style>
 
     * {
         box-sizing: border-box;
         margin: 0;
+        font-family: "Ubuntu", sans-serif;
     }
 
     html, body {
         height: 100%;
-        font-family: "Lucida Sans", sans-serif;
     }
 
     body {
         display: flex;
         flex-direction: column;
     }
-
-  .title {
+	
+	.title {
         color: #ffffff;
         padding: 5px;
-        font-size: 150%;
-        position:absolute;
+		font-size: 150%;
+		position: absolute;
     }
 
     .header {
         background-color: #40e0d0;
         color: #ffffff;
         padding: 5px;
+    }
+
+    .header-text {
+	    font-size: 22pt;
+	    margin-left: 5px;
+	    margin-right: 0;
+	    font-weight: bold;
     }
 
     .top {
@@ -50,7 +58,7 @@
     }
 
     .bottom-left {
-        display:flex;
+        display: flex;
     }
 
     .right {
@@ -229,7 +237,7 @@
 <body>
 
 <div class="header" height="100%">
-    <h1>PhysicalRehab.io</h1>
+    <p class="header-text">PhysicalRehab.io</p>
 </div>
 
 <div class="top">

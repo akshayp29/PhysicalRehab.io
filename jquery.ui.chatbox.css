@@ -3,31 +3,28 @@
     left: 0px;
     width: 100%;
     height: 100%;
-    background:  #CCCCCC;
     display: flex;
     flex-direction: column;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
 }
 
 .ui-chatbox-titlebar {
-    cursor: context-menu;
+    /*cursor: context-menu;*/
     flex: 1;
     width: 100%;
-    line-height: 35px;
-    font-weight: normal;
+    display: flex;
+    justify-content:center;
+    align-content:center;
     text-align: center;
-    padding: 3px;
+    flex-direction:column;
+    font-weight: normal;
 }
 
 .ui-chatbox-content {
     width: 100%;
     height: 100%;
-    flex: 11;
+    flex: 14;
     display: flex;
     flex-direction: column;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
 }
 
 .ui-chatbox-log {
