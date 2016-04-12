@@ -25,6 +25,7 @@
 
 .ui-chatbox-title {
     font-size: 18px;
+    flex: 1;
 }
 
 .ui-chatbox-content {
@@ -57,7 +58,7 @@
 }
 
 .ui-chatbox-input-box {
-    font-size: 12px !important;
+    font-size: 14px !important;
     flex: 1;
 }
 

@@ -20,12 +20,13 @@
         flex-direction: column;
     }
 
-	.rewards {
+	.rewards_heading {
         color: #ffffff;
         padding: 5px;
         margin: 5px;
-		font-size: 150%;
-		position: absolute;
+        flex: 1;
+		font-size: 120%;
+		/*position: absolute;*/
     }
 
     .page_title {
@@ -68,20 +69,31 @@
         display:flex;
     }
 
-    #ProgressBG {
-        margin:auto;
-        position: relative;
-        width: 300px;
-        height: 30px;
-        background-color: darkgray;
-        align-self: center;
+    .rewards_bar {
+        flex: 2;
     }
 
-    #ProgressBar {
-        position: absolute;
+    .rewards_background {
+        margin: auto;
+        width: 80%;
+        height: 35px;
+        background: darkgray;
+    }
+
+    .rewards {
+        background: blue;
+        text-align: center;
+        flex: 1;
+        border: 2px solid grey;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rewards_progress {
+        margin: 0;
         width: 3px;
-        height: 100%;
-        background-color: magenta;
+        height: 35px;
+        background: magenta;
     }
 
     #scroll {
@@ -282,11 +294,12 @@
         </div>
     </div>
 
-  <div class="right" style="background: blue" align="center">
-      <p class="rewards">Rewards</p>
-      <div id="ProgressBG">
-      <div id="ProgressBar"></div>
-    </div>
+    <div class="rewards">
+        <div class="rewards_heading">Rewards</div>
+        <div class="rewards_bar">
+            <div class="rewards_background"></div>
+            <div class="rewards_progress"></div>
+        </div>
     </div>
 </div>
 
