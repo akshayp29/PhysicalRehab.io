@@ -49,7 +49,6 @@
         flex: 1;
         background: yellow;
     }
-
 </style>
 
 <!--jQuery UI CSS-->
@@ -66,6 +65,15 @@
 
 <script type="text/javascript">
 
+
+	var flagDay = function(dateString){
+		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-flag\" color=\"red\"></div>");
+	}
+	
+	var notifyDay = function(dateString){
+		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-clock\"></div>");
+	}
+	
     $(document).ready(function() {
 
         box = $("#chat_div").chatbox( {
@@ -121,7 +129,12 @@
 		$(window).resize(function() {
 			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
 		  });
+		  
+		  flagDay('2016-04-01');
+		  notifyDay('2016-04-02');
     });
+	
+
 
 </script>
 </head>
