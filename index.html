@@ -5,6 +5,7 @@
 <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 <style>
 
+    /* Page styles */
     * {
         box-sizing: border-box;
         margin: 0;
@@ -20,15 +21,7 @@
         flex-direction: column;
     }
 
-	.rewards_heading {
-        color: #ffffff;
-        padding: 5px;
-        margin: 5px;
-        flex: 1;
-		font-size: 120%;
-		/*position: absolute;*/
-    }
-
+    /* Website Heading */
     .page_title {
         background-color: #40e0d0;
         color: #ffffff;
@@ -42,6 +35,7 @@
 	    font-weight: bold;
     }
 
+    /* Grid layout */
     .top {
         flex: 3;
         display: flex;
@@ -54,7 +48,7 @@
         flex-direction: row;
     }
 
-    .left, .bottom-left {
+    .top-left, .bottom-left {
         position: relative;
         flex: 3;
     }
@@ -63,62 +57,44 @@
         display: flex;
     }
 
-    .right {
+    .top-right, .bottom-right {
         position: relative;
         flex: 1;
-        display:flex;
-    }
-
-    .rewards_bar {
-        flex: 2;
-    }
-
-    .rewards_background {
-        margin: auto;
-        width: 80%;
-        height: 35px;
-        background: darkgray;
-    }
-
-    .rewards {
-        background: blue;
-        text-align: center;
-        flex: 1;
-        border: 2px solid grey;
         display: flex;
-        flex-direction: column;
     }
 
-    .rewards_progress {
-        margin: 0;
-        width: 3px;
-        height: 35px;
-        background: magenta;
-    }
-
+    /* Exercise strip */
     #scroll {
         flex: 1;
+        height: 100%;
+        width: 100%;
         background:#A3CBE0;
         border:2px solid #000;
-        overflow:auto;
-        overflow-y: hidden;
-        /*white-space:nowrap;*/
+        overflow-x: auto;
+        /*overflow-y: hidden;*/
+        /*white-space: nowrap;*/
         box-shadow:0 0 10px #000;
-        /*display:flex;*/
-        /*flex-direction: column;*/
+        position:absolute;
+        display: flex;
+        flex-flow: row;
         /*flex-wrap: wrap;*/
     }
 
     .card {
-        display: inline-block;
+        /*display: inline-block;*/
         padding: 5px;
         width: 170px;
         color: #fff!important;
         background-color: #616161!important;
         margin: 16px!important;
         text-align: center!important;
-        /*flex: 1;*/
-        height: 100%;
+        flex: none;
+        overflow: auto;
+    }
+
+    .card_heading {
+        margin-bottom: 5px;
+        font-size: 16px;
     }
 
     .green {
@@ -152,9 +128,43 @@
         /*font-weight: bold;*/
     }
 
-    .card_heading {
-        margin-bottom: 5px;
-        font-size: 16px;
+    /* Rewards */
+    .bottom-right {
+        background: green;
+        text-align: center;
+        border: 2px solid grey;
+        overflow: auto;
+        flex-direction: column;
+    }
+
+    .rewards_heading {
+        color: #ffffff;
+        padding: 5px;
+        margin: 5px;
+        flex: 1;
+        font-size: 120%;
+    }
+
+    .rewards_bar {
+        position: relative;
+        flex: 2;
+    }
+
+    .rewards_background {
+        margin-left: 10%;
+        width: 80%;
+        height: 35px;
+        background: darkgray;
+    }
+
+    .rewards_progress {
+        position: absolute;
+        margin-left: 10%;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 35px;
+        background: magenta;
     }
 
 </style>
@@ -265,10 +275,10 @@
 </div>
 
 <div class="top">
-    <div id="calendar" class="left" style="background: #F2F2F2">
+    <div id="calendar" class="top-left" style="background: #F2F2F2">
     </div>
 
-    <div id="messages" class="right">
+    <div id="messages" class="top-right">
         <div id="chat_div"></div>
     </div>
 </div>
@@ -278,15 +288,17 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:58%; max-height: 100%">
+                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; width:100%;">
 				<br>
-                <button class="button green">Accept</button>
-                <button class="button red">Decline</button>
+                <div>
+                    <button class="button green">Accept</button>
+                    <button class="button red">Decline</button>
+                </div>
             </div>
 
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:58%; max-height: 100%">
+                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; max-height: 100%">
 				<br>
                 <button class="button green">Accept</button>
                 <button class="button red">Decline</button>
@@ -294,7 +306,7 @@
         </div>
     </div>
 
-    <div class="rewards">
+    <div class="bottom-right">
         <div class="rewards_heading">Rewards</div>
         <div class="rewards_bar">
             <div class="rewards_background"></div>
