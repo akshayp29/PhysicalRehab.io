@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        font-family: "Ubuntu", sans-serif;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page_title {
+        background-color: #40e0d0;
+        color: #ffffff;
+        padding: 5px;
+    }
+
+    .page_title_text {
+      font-size: 22pt;
+      margin-left: 5px;
+      margin-right: 0;
+      font-weight: bold;
+    }
+
+    .top {
+        flex: 2;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .bottom {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .description {
+        position: relative;
+        flex: 1;
+        overflow-y: scroll;
+        scrollbar: hidden;
+    }
+
+    .description_header {
+        font-size: 24px;
+        border: 1px solid black;
+        padding: 2px;
+        margin: 10px;
+    }
+
+    .description_text {
+        font-size: 20px;
+        margin: 15px;
+    }
+
+    .video {
+        position: relative;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .exercise_video {
+        width: 100%;
+        padding-right: 4%;
+        padding-left: 4%;
+        flex: 1;
+    }
+
+    .messages {
+        position: relative;
+        flex: 1;
+    }
+
+    #clockdiv{
+        margin: 5%;
+        margin-bottom: 0;
+        font-family: sans-serif;
+        color: #fff;
+        display: inline-block;
+        font-weight: 100;
+        text-align: center;
+        font-size: 30px;
+
+        position: relative;
+        flex: 1;
+
+
+    }
+
+    .clock {
+        position: relative;
+        flex: 1;
+        /*overflow-y: scroll;*/
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    #clockdiv > div{
+        padding: 10px;
+        border-radius: 3px;
+        background: #00BF96;
+        display: inline-block;
+    }
+
+    #clockdiv div > span{
+        padding: 15px;
+        border-radius: 3px;
+        background: #00816A;
+        display: inline-block;
+    }
+
+    .smalltext{
+        padding-top: 5px;
+        font-size: 16px;
+    }
+
+    .start_button {
+        cursor: pointer;
+        margin-left: 35%;
+        margin-right: 35%;
+        margin-bottom: 5%;
+        font-size: 16px;
+        color: white;
+        border-radius: 5px;
+        border: 0px;
+        background-color: #00816A;
+        position: relative;
+        flex: 1;
+    }
+
+    .start_button:hover {
+        border-radius: 8px;
+    }
+
+
+    .check {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .button-check:hover {
+        background-color: #00ff00;
+    }
+
+    .button-check:active {
+        background-color: white;
+        border: 2px solid #00ff00;
+    }
+
+    .button-check {
+        display: block;
+        align-self: center;
+        margin: auto;
+        height: 150px;
+        width: 150px;
+        background-color: #00e600;
+        border-radius: 75px;
+    }
+
+    .button-check:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -23px 0 0 -30px;
+        height: 23px;
+        width: 53px;
+        border: solid white;
+        border-width: 0 0 10px 10px;
+        transform: rotate(-45deg);
+    }
+
+    .button-check:active:before {
+        border-color: #00ff00;
+    }
+
+    .flag {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .button-flag:hover {
+        background-color: #FF950A;
+    }
+
+    .button-flag:active {
+        background-color: white;
+        border: 2px solid #FF950A;
+    }
+
+    .button-flag {
+        display: block;
+        margin: auto;
+        height: 150px;
+        width: 150px;
+        background-color: #F58E07;
+        border-radius: 75px;
+    }
+
+    .button-flag:before {
+        content: "\2690";
+        display: block;
+        margin-left: 35px;
+        position: absolute;
+        color: white;
+        font-size: 110px;
+    }
+
+    .button-flag:active:before {
+        color: #FF950A;
+    }
+
+
+
+</style>
+
+<!--jQuery UI CSS-->
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
+<!-- FullCalendar styles-->
+<link rel="stylesheet" href="fullcalendar.css" />
+<!--jQuery and jQuery UI with jQuery Chat-->
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<script type="text/javascript" src="jquery-ui.js"></script>
+<link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
+<script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+<script src='moment.js'></script>
+<script src='fullcalendar.js'></script>
+
+<script type="text/javascript">
+
+    function sendMessageDocToPatient(name, message) {
+        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
+    }
+
+    function getTimeRemaining(endtime) {
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor((t / 1000) % 60);
+        var minutes = Math.floor((t / 1000 / 60) % 60);
+        return {
+            'total': t,
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
+
+    function initializeClock(id, endtime, start) {
+        var clock = document.getElementById(id);
+        var minutesSpan = clock.querySelector('.minutes');
+        var secondsSpan = clock.querySelector('.seconds');
+
+        function updateClock() {
+            var t = getTimeRemaining(endtime);
+            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
+            }
+        }
+
+        updateClock();
+        if (start) {
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+    }
+
+    $(document).ready(function() {
+        var numberOfMessages = 0;
+        box = $("#chat_div").chatbox( {
+            id:"Me",
+            user:
+                {
+                    key : "value"
+                },
+            title : "Messages to Doc Brown",
+            // right_offset: 0, // relative to the right of the screen
+            // bottom_offset: 0, // relative to the bottom of the browser window
+
+            messageSent : function(id, user, msg) {
+                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                numberOfMessages += 1;
+                if (numberOfMessages == 1) {
+                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
+                }
+
+            }
+        });
+        if (numberOfMessages == 0) {
+            sendMessageDocToPatient("Doc Brown", "How's the training going?");
+        }
+
+        var deadline = new Date(Date.parse(new Date()) + 1 * 60 * 1000); // SET TIMER LENGTH HERE
+        initializeClock('clockdiv', deadline, false);
+
+    });
+
+
+</script>
+</head>
+
+
+<body>
+
+<div class="page_title" height="100%">
+    <p class="page_title_text">PhysicalRehab.io</p>
+</div>
+
+<div class="top">
+    <div class="description">
+        <p class="description_header">Tree for 1 minute</p>
+        <p class="description_text">Stand with your feet together, toes all facing forward, hands on hips. Elevate your right knee to hip height. Turn out your right hip and place the entire sole of your foot onto your left calf or inner thigh (grab your ankle to hike the foot up to the thigh). With an MCL tear, you might not be able to turn your hip/leg out a lot at first. Ease into this external rotation over time. It can take months to get to a full turnout. Keep your gaze steady on a single focal point. Hold for 5 breaths. Build to 10 breaths and ultimately one minute. Repeat with the left leg.</p>
+    </div>
+    <div class="video">
+        <iframe class="exercise_video" src="https://www.youtube.com/embed/wdln9qWYloU" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div id="messages" class="messages">
+        <div id="chat_div"></div>
+    </div>
+</div>
+
+<div class="bottom">
+    <div class="clock">
+        <!-- <div class="tc_div_51694" style="width:650px;height:162.50px;border:1px solid #C0C0C0;"><a title="Countdown" href="http://www.tickcounter.com/countdown/1460438100000/america-new_york/ms/FFFFFF3B5998000000FF0000/">Countdown</a><a title="Countdown" href="http://www.tickcounter.com/">Countdown</a></div><script type="text/javascript">(function(){ var s=document.createElement('script');s.src="http://www.tickcounter.com/loader.js";s.async='async';s.onload=function() { tc_widget_loader('tc_div_51694', 'Countdown', 650, ['1460438100000', 'america-new_york', 'ms', 'FFFFFF3B5998000000FF0000', '650', 'C0C0C01', '']);};s.onreadystatechange=s.onload;var head=document.getElementsByTagName('head')[0];head.appendChild(s);}());</script> -->
+        <div id="clockdiv">
+            <div>
+                <span class="minutes"></span>
+                <div class="smalltext">Minutes</div>
+            </div>
+            <div>
+                <span class="seconds"></span>
+                <div class="smalltext">Seconds</div>
+            </div>
+        </div>
+        <button class="start_button" onclick="initializeClock('clockdiv', new Date(Date.parse(new Date()) + 1 * 60 * 1000), true)">Start</button>
+    </div>
+
+    <div class="check">
+        <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a>
+    </div>
+    <div class="flag">
+        <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
+    </div>
+
+</div>
+
+</body>
+</html>
