@@ -41,6 +41,7 @@
                     $(msgElement).text(msg);
                     e.appendChild(msgElement);
                     $(e).addClass("ui-chatbox-msg");
+                    $(e).css("fontSize", "16px");
                     $(e).css("maxWidth", $(box).width());
                     $(e).fadeIn();
                     self._scrollToBottom();
@@ -81,6 +82,7 @@
                 .appendTo(uiChatbox),
 
             uiChatboxTitle = (self.uiChatboxTitle = $('<span></span>'))
+                .addClass('ui-chatbox-title')
                 .html(title)
                 .appendTo(uiChatboxTitlebar),
 
@@ -104,7 +106,7 @@
                          )
                 .appendTo(uiChatboxContent),
 
-            uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea></textarea>'))
+            uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea placeholder="Press Enter to send"></textarea>'))
                 .addClass('ui-widget-content ' +
                           'ui-chatbox-input-box ' +
                           'ui-corner-all'
@@ -133,9 +135,6 @@
                 self.uiChatboxInputBox.focus();
             });
 
-            // self._setWidth(self.options.width);
-            // self._position(self.options.right_offset, self.options.bottom_offset);
-
             self.options.boxManager.init(self);
         },
 
@@ -144,12 +143,6 @@
             this.uiChatboxLog.width(width + "px");
             this.uiChatboxInput.css("maxWidth", width + "px");
             this.uiChatboxInputBox.css("width", (width - 18) + "px");
-        },
-
-        _position: function(right_offset, bottom_offset) {
-            // this.uiChatbox.css("left", right_offset);
-            // this.uiChatbox.css("bottom", bottom_offset);
-
         }
     });
 }(jQuery));
