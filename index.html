@@ -166,7 +166,6 @@
         height: 35px;
         background: green;
     }
-
 </style>
 
 <!--jQuery UI CSS-->
@@ -182,6 +181,14 @@
 <script src='fullcalendar.js'></script>
 
 <script type="text/javascript">
+
+	var flagDay = function(dateString){
+		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-flag\" color=\"red\"></div>");
+	}
+	
+	var notifyDay = function(dateString){
+		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-clock\"></div>");
+	}
 
     //call this to tick the rewards progress bar
     function RewardsTick() {
@@ -264,7 +271,49 @@
         $(window).resize(function() {
             $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
         });
+		
+		// calendar
+		cannedEvents = []
+		for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+			cannedEvents.push({
+				title: "Stand on right foot",
+				start: m.format('YYYY-MM-DD')
+			});
+				
+			if (m.day() % 2 == 1){
+				cannedEvents.push({
+					title: "Push-ups",
+					start: m.format('YYYY-MM-DD')
+				});
+			}
+		}
+	
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev',
+				center: 'title',
+				right: 'today next'
+			},
+			height: $('#calendar').height(),
+			events: cannedEvents,
+			dayClick: function(date, jsEvent, view){
+				$('#calendar').fullCalendar('select', date);
+			},
+			eventClick: function(calEvent, jsEvent, view) {
+				// pull up activity page for selected event (probably canned)
+			},
+			editable: false
+		});
+		
+		$(window).resize(function() {
+			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
+		  });
+		  
+		  flagDay('2016-04-01');
+		  notifyDay('2016-04-02');
     });
+	
+
 
 </script>
 </head>
