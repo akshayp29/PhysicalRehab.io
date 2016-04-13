@@ -79,7 +79,9 @@
     }
 
     .card {
-        padding: 5px;
+        padding: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         color: #fff!important;
         background-color: #616161!important;
         margin: 16px!important;
@@ -129,99 +131,112 @@
         flex-direction: row;
     }
 
-
+    /* Buttons */
     .alarm {
         position: relative;
+        margin: 5px 4px;
         flex: 1;
     }
-    .button-alarm img {
-        width: 1px;
+
+    .check {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 1px;
+        border:none;
+        outline:0;
+        margin: 5px 4px;
+        vertical-align:middle;
+        overflow:hidden;
+        text-decoration:none!important;
+        color:#fff;
+        text-align:center;
+        cursor:pointer;
+        white-space:nowrap
     }
 
+    .button-check:hover {
+        background-color: #00ff00;
+    }
 
-.check {
-    position: relative;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    padding: 1px;
-}
+    .button-check:active {
+        background-color: white;
+    }
 
-.button-check:hover {
-    background-color: #00ff00;
-}
+    .button-check {
+        margin: auto;
+        height: 36px;
+        width: 36px;
+        background-color: #00e600;
+        border-radius: 18px;
+    }
 
-.button-check:active {
-    background-color: white;
-    border: 1px solid #00ff00;
-}
+    .button-check:before {
+        content: '';
+        display: inline-block;
+        position: relative;
+        top: 16%;
+        left: 2%;
+        height: 5px;
+        width: 12px;
+        border: solid white;
+        border-width: 0 0 3px 3px;
+        transform: rotate(-45deg);
+    }
 
-.button-check {
-    margin: auto;
-    height: 25px;
-    width: 25px;
-    background-color: #00e600;
-    border-radius: 12px;
-}
+    .button-check:active:before {
+        border-color: #00ff00;
+    }
 
-.button-check:before {
-    content: '';
-    display: inline-block;
-    position: relative;
-    top: 4%;
-    left: 5%;
-    margin: -2px 0 0 -3px;
-    height: 3px;
-    width: 5px;
-    border: solid white;
-    border-width: 0 0 3px 3px;
-    transform: rotate(-45deg);
-}
+    /* Flag */
+    .flag {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 1px;
+        border:none;
+        outline:0;
+        margin: 5px 4px;
+        vertical-align:middle;
+        overflow:hidden;
+        text-decoration:none!important;
+        color:#fff;
+        text-align:center;
+        cursor:pointer;
+        white-space:nowrap
+    }
 
-.button-check:active:before {
-    border-color: #00ff00;
-}
+    .button-flag:hover {
+        background-color: #FF950A;
+    }
 
-/* Flag */
-.flag {
-    position: relative;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    padding: 1px;
-}
+    .button-flag:active {
+        background-color: white;
+    }
 
-.button-flag:hover {
-    background-color: #FF950A;
-}
+    .button-flag {
+        margin: auto;
+        height: 36px;
+        width: 36px;
+        background-color: #F58E07;
+        border-radius: 18px;
+    }
 
-.button-flag:active {
-    background-color: white;
-    border: 1px solid #FF950A;
-}
+    .button-flag:before {
+        content: "\2690";
+        display: inline-block;
+        top: -3px;
+        left: 1px;
+        font-size: 33px;
+        position: relative;
+        color: white;
+    }
 
-.button-flag {
-    margin: auto;
-    height: 15px;
-    width: 15px;
-    background-color: #F58E07;
-    border-radius: 7px;
-}
-
-.button-flag:before {
-    content: "\2690";
-    display: inline-block;
-    top: 4px;
-    left: 4px;
-    font-size: 11px;
-    position: relative;
-    color: white;
-}
-
-.button-flag:active:before {
-    color: #FF950A;
-}
-
+    .button-flag:active:before {
+        color: #FF950A;
+    }
 
     /* Rewards */
     .bottom-right {
@@ -366,7 +381,7 @@
 
             if (m.date() % 2 == 1){
                 cannedEvents.push({
-                    title: "Push-ups",
+                    title: "Jumping Jacks",
                     start: m.format('YYYY-MM-DD')
                 });
             }
@@ -471,9 +486,7 @@
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
                 <div class="buttons">
-                    <div class="alarm">
-                        <button class="button-alarm"><img src="alarm.png"></button> <!-- needs date -->
-                    </div>
+                    <input class="alarm" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
                     <div class="check">
                         <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a> <!-- needs date -->
                     </div>
@@ -484,9 +497,16 @@
             </div>
 
             <div class="card">
-                <p class="card_heading">Jumping Jacks</p>
-                <button class="button green">Accept</button>
-                <button class="button red">Decline</button>
+                <p class="card_heading">Tree Pose</p>
+                <div class="buttons">
+                    <input class="alarm" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
+                    <div class="check">
+                        <a href="index.html?status=check&exercise=right_foot" class="button-check"></a> <!-- needs date -->
+                    </div>
+                    <div class="flag">
+                        <a href="index.html?status=flag&exercise=right_foot" class="button-flag"></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
