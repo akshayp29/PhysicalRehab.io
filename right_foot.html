@@ -3,235 +3,10 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-<style>
-
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        font-family: "Ubuntu", sans-serif;
-    }
-
-    html, body {
-        height: 100%;
-    }
-
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .page_title {
-        background-color: #40e0d0;
-        color: #ffffff;
-        padding: 5px;
-    }
-
-    .page_title_text {
-      font-size: 22pt;
-      margin-left: 5px;
-      margin-right: 0;
-      font-weight: bold;
-    }
-
-    .top {
-        flex: 2;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .bottom {
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .description {
-        position: relative;
-        flex: 1;
-        overflow-y: scroll;
-        scrollbar: hidden;
-    }
-
-    .description_header {
-        font-size: 24px;
-        border: 1px solid black;
-        padding: 2px;
-        margin: 10px;
-    }
-
-    .description_text {
-        font-size: 20px;
-        margin: 15px;
-    }
-
-    .video {
-        position: relative;
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .exercise_video {
-        width: 100%;
-        padding-right: 4%;
-        padding-left: 4%;
-        flex: 1;
-    }
-
-    .messages {
-        position: relative;
-        flex: 1;
-    }
-
-    #clockdiv{
-        margin: 5%;
-        margin-bottom: 0;
-        font-family: sans-serif;
-        color: #fff;
-        display: inline-block;
-        font-weight: 100;
-        text-align: center;
-        font-size: 30px;
-        position: relative;
-        flex: 1;
-    }
-
-    .clock {
-        position: relative;
-        flex: 1;
-        /*overflow-y: scroll;*/
-        display: flex;
-        flex-direction: column;
-
-    }
-
-    #clockdiv > div{
-        padding: 10px;
-        border-radius: 3px;
-        background: #00BF96;
-        display: inline-block;
-    }
-
-    #clockdiv div > span{
-        padding: 15px;
-        border-radius: 3px;
-        background: #00816A;
-        display: inline-block;
-    }
-
-    .smalltext{
-        padding-top: 5px;
-        font-size: 16px;
-    }
-
-    .start_button {
-        cursor: pointer;
-        margin-left: 35%;
-        margin-right: 35%;
-        margin-bottom: 5%;
-        font-size: 16px;
-        color: white;
-        border-radius: 5px;
-        border: 0px;
-        background-color: #00816A;
-        position: relative;
-        flex: 1;
-    }
-
-    .start_button:hover {
-        border-radius: 8px;
-    }
-
-
-    .check {
-        position: relative;
-        flex: 1;
-        display: flex;
-        justify-content: center;
-    }
-
-    .button-check:hover {
-        background-color: #00ff00;
-    }
-
-    .button-check:active {
-        background-color: white;
-        border: 2px solid #00ff00;
-    }
-
-    .button-check {
-        display: block;
-        align-self: center;
-        margin: auto;
-        height: 150px;
-        width: 150px;
-        background-color: #00e600;
-        border-radius: 75px;
-    }
-
-    .button-check:before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -23px 0 0 -30px;
-        height: 23px;
-        width: 53px;
-        border: solid white;
-        border-width: 0 0 10px 10px;
-        transform: rotate(-45deg);
-    }
-
-    .button-check:active:before {
-        border-color: #00ff00;
-    }
-
-    .flag {
-        position: relative;
-        flex: 1;
-        display: flex;
-        justify-content: center;
-    }
-
-    .button-flag:hover {
-        background-color: #FF950A;
-    }
-
-    .button-flag:active {
-        background-color: white;
-        border: 2px solid #FF950A;
-    }
-
-    .button-flag {
-        display: block;
-        margin: auto;
-        height: 150px;
-        width: 150px;
-        background-color: #F58E07;
-        border-radius: 75px;
-    }
-
-    .button-flag:before {
-        content: "\2690";
-        display: block;
-        margin-left: 35px;
-        position: absolute;
-        color: white;
-        font-size: 110px;
-    }
-
-    .button-flag:active:before {
-        color: #FF950A;
-    }
-
-
-
-</style>
-
 <!--jQuery UI CSS-->
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
-<!-- FullCalendar styles-->
-<link rel="stylesheet" href="fullcalendar.css" />
+<!-- Exercises styles-->
+<link rel="stylesheet" href="exercises.css" />
 <!--jQuery and jQuery UI with jQuery Chat-->
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="jquery-ui.js"></script>
@@ -241,6 +16,8 @@
 <script src='fullcalendar.js'></script>
 
 <script type="text/javascript">
+
+    var hasStarted = false;
 
     function sendMessageDocToPatient(name, message) {
         $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
@@ -258,6 +35,8 @@
     }
 
     function initializeClock(id, endtime, start) {
+        if (hasStarted) return;
+        if (start) hasStarted = true;
         var clock = document.getElementById(id);
         var minutesSpan = clock.querySelector('.minutes');
         var secondsSpan = clock.querySelector('.seconds');
@@ -334,7 +113,6 @@
 
 <div class="bottom">
     <div class="clock">
-        <!-- <div class="tc_div_51694" style="width:650px;height:162.50px;border:1px solid #C0C0C0;"><a title="Countdown" href="http://www.tickcounter.com/countdown/1460438100000/america-new_york/ms/FFFFFF3B5998000000FF0000/">Countdown</a><a title="Countdown" href="http://www.tickcounter.com/">Countdown</a></div><script type="text/javascript">(function(){ var s=document.createElement('script');s.src="http://www.tickcounter.com/loader.js";s.async='async';s.onload=function() { tc_widget_loader('tc_div_51694', 'Countdown', 650, ['1460438100000', 'america-new_york', 'ms', 'FFFFFF3B5998000000FF0000', '650', 'C0C0C01', '']);};s.onreadystatechange=s.onload;var head=document.getElementsByTagName('head')[0];head.appendChild(s);}());</script> -->
         <div id="clockdiv">
             <div>
                 <span class="minutes"></span>
@@ -351,10 +129,10 @@
     <div class="check">
         <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a>
     </div>
+
     <div class="flag">
         <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
     </div>
-
 </div>
 
 </body>

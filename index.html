@@ -29,10 +29,10 @@
     }
 
     .page_title_text {
-	    font-size: 22pt;
-	    margin-left: 5px;
-	    margin-right: 0;
-	    font-weight: bold;
+        font-size: 22pt;
+        margin-left: 5px;
+        margin-right: 0;
+        font-weight: bold;
     }
 
     /* Grid layout */
@@ -71,29 +71,25 @@
         background:#A3CBE0;
         border:2px solid #000;
         overflow-x: auto;
-        /*overflow-y: hidden;*/
-        /*white-space: nowrap;*/
         box-shadow:0 0 10px #000;
-        position:absolute;
+        position: absolute;
         display: flex;
         flex-flow: row;
-        /*flex-wrap: wrap;*/
+        align-items: center;
     }
 
     .card {
-        /*display: inline-block;*/
         padding: 5px;
-        width: 170px;
         color: #fff!important;
         background-color: #616161!important;
         margin: 16px!important;
-        text-align: center!important;
-        flex: none;
-        overflow: auto;
+        display: table;
     }
 
     .card_heading {
+        text-align: center;
         margin-bottom: 5px;
+        margin-top: 5px;
         font-size: 16px;
     }
 
@@ -141,8 +137,9 @@
         color: #ffffff;
         padding: 5px;
         margin: 5px;
+        margin-top: 10px;
         flex: 1;
-        font-size: 120%;
+        font-size: 22px;
     }
 
     .rewards_bar {
@@ -155,6 +152,7 @@
         width: 80%;
         height: 35px;
         background: white;
+        border-radius: 5px;
     }
 
     .rewards_progress {
@@ -162,9 +160,11 @@
         margin-left: 10%;
         top: 0;
         left: 0;
-        width: 50px;
+        width: 3px;
         height: 35px;
         background: green;
+        transition: width 1s ease-in-out;
+        border-radius: 5px;
     }
 </style>
 
@@ -184,28 +184,51 @@
 
 	var calendarSelectedDay = null;
 	
-	var flagDay = function(date){
+	var flagDate = function(date){
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='flag.png' style='vertical-align:middle; float: right;'>");
 	};
 	
-	var notifyDay = function(date){
+	var notifyDate = function(date){
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='clock.png' style='vertical-align:middle; float: right;'>");
 	};
 
-    //call this to tick the rewards progress bar
-    function RewardsTick() {
-        var curWidth = $('#ProgressBar').width();
-        var newWidth = Math.min(curWidth+100, 300);
+    var getUrlParameter = function(param) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
 
-        var id = setInterval(frame, 10);
-        function frame() {
-            if (curWidth >= newWidth) {
-                clearInterval(id);
-            } else {
-                curWidth++;
-                $("#ProgressBar").width(curWidth);
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === param) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
             }
         }
+    };
+
+    //call this to tick the rewards progress bar
+    function toggleRewards() {
+        var date = new Date(getUrlParameter("date"));
+        var numberOfExercises;
+        if (date.getDate() % 2 == 1) {
+            $(".rewards_progress").width("40%");
+        } else {
+            $(".rewards_progress").width("80%");
+        }
+
+        // var curWidth = $('#rewards_progress').width();
+        // var newWidth = Math.min(curWidth+100, 300);
+
+        // var id = setInterval(frame, 10);
+        // function frame() {
+        //     if (curWidth >= newWidth) {
+        //         clearInterval(id);
+        //     } else {
+        //         curWidth++;
+        //         $("#rewards_progress").width(curWidth);
+        //     }
+        // }
     }
 
     function sendMessageDocToPatient(name, message) {
@@ -241,7 +264,7 @@
         cannedEvents = []
         for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
             cannedEvents.push({
-                title: "Stand on right foot",
+                title: "Tree pose",
                 start: m.format('YYYY-MM-DD')
             });
 
@@ -280,11 +303,24 @@
             $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
         });
 		  
-		  calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
-		  //flagDay('2016-04-01'); 
-		  //notifyDay('2016-04-02');
+		 calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+
+        var status = getUrlParameter("status");
+        var exercise = getUrlParameter("exercise");
+        var date = getUrlParameter("date");
+
+        if (status && exercise) {
+            if (status == "check") {
+                // completeExercise(date, exercise);
+                toggleRewards();
+            } else if (status == "flag") {
+                // flagExercise(date, exercise);
+                flagDate(date);
+            }
+        }
+
     });
-	
+
 	var getEventCount = function(date){
 		return $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
 			if (eventObj.start.isSame(date)) {
@@ -294,7 +330,7 @@
 			}
 		}).length;
 	};
-
+	
 	var setEventTextColor = function(date, eventName, color){
 		console.log("Set event text color:");
 		event = $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
@@ -326,18 +362,12 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; width:100%;">
-				<br>
-                <div>
-                    <button class="button green">Accept</button>
-                    <button class="button red">Decline</button>
-                </div>
+                <button class="button green">Accept</button>
+                <button class="button red">Decline</button>
             </div>
 
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; max-height: 100%">
-				<br>
                 <button class="button green">Accept</button>
                 <button class="button red">Decline</button>
             </div>

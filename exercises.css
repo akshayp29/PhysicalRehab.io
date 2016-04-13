@@ -1,0 +1,228 @@
+/* Page CSS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: "Ubuntu", sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Page Title */
+.page_title {
+    background-color: #40e0d0;
+    color: #ffffff;
+    padding: 5px;
+}
+
+.page_title_text {
+  font-size: 22pt;
+  margin-left: 5px;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+/* Grid layout */
+.top {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+}
+
+.bottom {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Exercise Description */
+.description {
+    position: relative;
+    flex: 1;
+    overflow-y: scroll;
+    scrollbar: hidden;
+}
+
+.description_header {
+    font-size: 24px;
+    border: 1px solid black;
+    padding: 2px;
+    margin: 10px;
+}
+
+.description_text {
+    font-size: 20px;
+    margin: 15px;
+}
+
+/* Video */
+.video {
+    position: relative;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise_video {
+    width: 100%;
+    padding-right: 4%;
+    padding-left: 4%;
+    flex: 1;
+}
+
+.messages {
+    position: relative;
+    flex: 1;
+}
+
+/* Clock */
+.clock {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    overflow: hidden;
+}
+
+#clockdiv{
+    margin: 5%;
+    margin-bottom: 0;
+    font-family: sans-serif;
+    color: #fff;
+    /*display: inline-block;*/
+    font-weight: 100;
+    text-align: center;
+    font-size: 30px;
+    position: relative;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+}
+
+#clockdiv > div{
+    padding: 10px;
+    border-radius: 3px;
+    background: #00BF96;
+    margin: 10px;
+    height: 100%;
+    position: relative;
+}
+
+#clockdiv div > span{
+    padding: 15px;
+    border-radius: 3px;
+    background: #00816A;
+    display: inline-block;
+}
+
+.smalltext{
+    padding-top: 5px;
+    font-size: 16px;
+}
+
+.start_button {
+    cursor: pointer;
+    width: 100px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    min-height: 30px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #00816A;
+    position: relative;
+    flex: 1;
+}
+
+/* Check */
+.check {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.button-check:hover {
+    background-color: #00ff00;
+}
+
+.button-check:active {
+    background-color: white;
+    border: 2px solid #00ff00;
+}
+
+.button-check {
+    margin: auto;
+    height: 150px;
+    width: 150px;
+    background-color: #00e600;
+    border-radius: 75px;
+}
+
+.button-check:before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    top: 48%;
+    left: 50%;
+    margin: -23px 0 0 -30px;
+    height: 23px;
+    width: 53px;
+    border: solid white;
+    border-width: 0 0 10px 10px;
+    transform: rotate(-45deg);
+}
+
+.button-check:active:before {
+    border-color: #00ff00;
+}
+
+/* Flag */
+.flag {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.button-flag:hover {
+    background-color: #FF950A;
+}
+
+.button-flag:active {
+    background-color: white;
+    border: 2px solid #FF950A;
+}
+
+.button-flag {
+    margin: auto;
+    height: 150px;
+    width: 150px;
+    background-color: #F58E07;
+    border-radius: 75px;
+}
+
+.button-flag:before {
+    content: "\2690";
+    display: inline-block;
+    top: 4px;
+    left: 42px;
+    font-size: 110px;
+    position: relative;
+    color: white;
+}
+
+.button-flag:active:before {
+    color: #FF950A;
+}
