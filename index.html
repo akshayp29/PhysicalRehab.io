@@ -71,29 +71,25 @@
         background:#A3CBE0;
         border:2px solid #000;
         overflow-x: auto;
-        /*overflow-y: hidden;*/
-        /*white-space: nowrap;*/
         box-shadow:0 0 10px #000;
-        position:absolute;
+        position: absolute;
         display: flex;
         flex-flow: row;
-        /*flex-wrap: wrap;*/
+        align-items: center;
     }
 
     .card {
-        /*display: inline-block;*/
         padding: 5px;
-        width: 170px;
         color: #fff!important;
         background-color: #616161!important;
         margin: 16px!important;
-        text-align: center!important;
-        flex: none;
-        overflow: auto;
+        display: table;
     }
 
     .card_heading {
+        text-align: center;
         margin-bottom: 5px;
+        margin-top: 5px;
         font-size: 16px;
     }
 
@@ -376,18 +372,12 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; width:100%;">
-                <br>
-                <div>
-                    <button class="button green">Accept</button>
-                    <button class="button red">Decline</button>
-                </div>
+                <button class="button green">Accept</button>
+                <button class="button red">Decline</button>
             </div>
 
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; max-height: 100%">
-                <br>
                 <button class="button green">Accept</button>
                 <button class="button red">Decline</button>
             </div>
