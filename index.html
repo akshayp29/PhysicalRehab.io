@@ -79,7 +79,9 @@
     }
 
     .card {
-        padding: 5px;
+        padding: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         color: #fff!important;
         background-color: #616161!important;
         margin: 16px!important;
@@ -124,6 +126,118 @@
         /*font-weight: bold;*/
     }
 
+    .buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+    /* Buttons */
+    .alarm {
+        position: relative;
+        margin: 5px 4px;
+        flex: 1;
+    }
+
+    .check {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 1px;
+        border:none;
+        outline:0;
+        margin: 5px 4px;
+        vertical-align:middle;
+        overflow:hidden;
+        text-decoration:none!important;
+        color:#fff;
+        text-align:center;
+        cursor:pointer;
+        white-space:nowrap
+    }
+
+    .button-check:hover {
+        background-color: #00ff00;
+    }
+
+    .button-check:active {
+        background-color: white;
+    }
+
+    .button-check {
+        margin: auto;
+        height: 36px;
+        width: 36px;
+        background-color: #00e600;
+        border-radius: 18px;
+    }
+
+    .button-check:before {
+        content: '';
+        display: inline-block;
+        position: relative;
+        top: 16%;
+        left: 2%;
+        height: 5px;
+        width: 12px;
+        border: solid white;
+        border-width: 0 0 3px 3px;
+        transform: rotate(-45deg);
+    }
+
+    .button-check:active:before {
+        border-color: #00ff00;
+    }
+
+    /* Flag */
+    .flag {
+        position: relative;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 1px;
+        border:none;
+        outline:0;
+        margin: 5px 4px;
+        vertical-align:middle;
+        overflow:hidden;
+        text-decoration:none!important;
+        color:#fff;
+        text-align:center;
+        cursor:pointer;
+        white-space:nowrap
+    }
+
+    .button-flag:hover {
+        background-color: #FF950A;
+    }
+
+    .button-flag:active {
+        background-color: white;
+    }
+
+    .button-flag {
+        margin: auto;
+        height: 36px;
+        width: 36px;
+        background-color: #F58E07;
+        border-radius: 18px;
+    }
+
+    .button-flag:before {
+        content: "\2690";
+        display: inline-block;
+        top: -3px;
+        left: 1px;
+        font-size: 33px;
+        position: relative;
+        color: white;
+    }
+
+    .button-flag:active:before {
+        color: #FF950A;
+    }
+
     /* Rewards */
     .bottom-right {
         background: #66C75B;
@@ -136,8 +250,7 @@
     .rewards_heading {
         color: #ffffff;
         padding: 5px;
-        margin: 5px;
-        margin-top: 10px;
+        margin-top: 5%;
         flex: 1;
         font-size: 22px;
     }
@@ -262,13 +375,13 @@
 
         // calendar
         cannedEvents = []
-        for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+        for (var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('06 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
             cannedEvents.push({
                 title: "Tree pose",
                 start: m.format('YYYY-MM-DD')
             });
 
-            if (m.day() % 2 == 1){
+            if (m.date() % 2 == 1){
                 cannedEvents.push({
                     title: "Push-ups",
                     start: m.format('YYYY-MM-DD')
@@ -362,14 +475,28 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <button class="button green">Accept</button>
-                <button class="button red">Decline</button>
+                <div class="buttons">
+                    <input class="alarm" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
+                    <div class="check">
+                        <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a> <!-- needs date -->
+                    </div>
+                    <div class="flag">
+                        <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
-                <p class="card_heading">Jumping Jacks</p>
-                <button class="button green">Accept</button>
-                <button class="button red">Decline</button>
+                <p class="card_heading">Tree Pose</p>
+                <div class="buttons">
+                    <input class="alarm" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
+                    <div class="check">
+                        <a href="index.html?status=check&exercise=right_foot" class="button-check"></a> <!-- needs date -->
+                    </div>
+                    <div class="flag">
+                        <a href="index.html?status=flag&exercise=right_foot" class="button-flag"></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
