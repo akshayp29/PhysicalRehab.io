@@ -29,10 +29,10 @@
     }
 
     .page_title_text {
-	    font-size: 22pt;
-	    margin-left: 5px;
-	    margin-right: 0;
-	    font-weight: bold;
+        font-size: 22pt;
+        margin-left: 5px;
+        margin-right: 0;
+        font-weight: bold;
     }
 
     /* Grid layout */
@@ -141,8 +141,9 @@
         color: #ffffff;
         padding: 5px;
         margin: 5px;
+        margin-top: 10px;
         flex: 1;
-        font-size: 120%;
+        font-size: 22px;
     }
 
     .rewards_bar {
@@ -155,6 +156,7 @@
         width: 80%;
         height: 35px;
         background: white;
+        border-radius: 5px;
     }
 
     .rewards_progress {
@@ -162,9 +164,11 @@
         margin-left: 10%;
         top: 0;
         left: 0;
-        width: 50px;
+        width: 3px;
         height: 35px;
         background: green;
+        transition: width 1s ease-in-out;
+        border-radius: 5px;
     }
 </style>
 
@@ -182,28 +186,51 @@
 
 <script type="text/javascript">
 
-	var flagDay = function(dateString){
-		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-flag\" color=\"red\"></div>");
-	}
-	
-	var notifyDay = function(dateString){
-		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-clock\"></div>");
-	}
+    var flagDate = function(dateString){
+        $(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-flag\" color=\"red\"></div>");
+    }
 
-    //call this to tick the rewards progress bar
-    function RewardsTick() {
-        var curWidth = $('#ProgressBar').width();
-        var newWidth = Math.min(curWidth+100, 300);
+    var notifyDate = function(dateString){
+        $(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-clock\"></div>");
+    }
 
-        var id = setInterval(frame, 10);
-        function frame() {
-            if (curWidth >= newWidth) {
-                clearInterval(id);
-            } else {
-                curWidth++;
-                $("#ProgressBar").width(curWidth);
+    var getUrlParameter = function(param) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === param) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
             }
         }
+    };
+
+    //call this to tick the rewards progress bar
+    function toggleRewards() {
+        var date = new Date(getUrlParameter("date"));
+        var numberOfExercises;
+        if (date.getDate() % 2 == 1) {
+            $(".rewards_progress").width("40%");
+        } else {
+            $(".rewards_progress").width("80%");
+        }
+
+        // var curWidth = $('#rewards_progress').width();
+        // var newWidth = Math.min(curWidth+100, 300);
+
+        // var id = setInterval(frame, 10);
+        // function frame() {
+        //     if (curWidth >= newWidth) {
+        //         clearInterval(id);
+        //     } else {
+        //         curWidth++;
+        //         $("#rewards_progress").width(curWidth);
+        //     }
+        // }
     }
 
     function sendMessageDocToPatient(name, message) {
@@ -234,6 +261,43 @@
         if (numberOfMessages == 0) {
             sendMessageDocToPatient("Doc Brown", "How's the training going?");
         }
+
+        // calendar
+        cannedEvents = []
+        for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('06 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
+            cannedEvents.push({
+                title: "Tree pose",
+                start: m.format('YYYY-MM-DD')
+            });
+
+            if (m.date() % 2 == 1){
+                cannedEvents.push({
+                    title: "Push-ups",
+                    start: m.format('YYYY-MM-DD')
+                });
+            }
+        }
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title',
+                right: 'today next'
+            },
+            height: $('#calendar').height(),
+            events: cannedEvents,
+            dayClick: function(date, jsEvent, view){
+                $('#calendar').fullCalendar('select', date);
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+                // pull up activity page for selected event (probably canned)
+            },
+            editable: false
+        });
+
+        $(window).resize(function() {
+            $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
+        });
 
         // calendar
         cannedEvents = []
@@ -271,48 +335,23 @@
         $(window).resize(function() {
             $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
         });
-		
-		// calendar
-		cannedEvents = []
-		for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
-			cannedEvents.push({
-				title: "Stand on right foot",
-				start: m.format('YYYY-MM-DD')
-			});
-				
-			if (m.day() % 2 == 1){
-				cannedEvents.push({
-					title: "Push-ups",
-					start: m.format('YYYY-MM-DD')
-				});
-			}
-		}
-	
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev',
-				center: 'title',
-				right: 'today next'
-			},
-			height: $('#calendar').height(),
-			events: cannedEvents,
-			dayClick: function(date, jsEvent, view){
-				$('#calendar').fullCalendar('select', date);
-			},
-			eventClick: function(calEvent, jsEvent, view) {
-				// pull up activity page for selected event (probably canned)
-			},
-			editable: false
-		});
-		
-		$(window).resize(function() {
-			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
-		  });
-		  
-		  flagDay('2016-04-01');
-		  notifyDay('2016-04-02');
+
+        var status = getUrlParameter("status");
+        var exercise = getUrlParameter("exercise");
+        var date = getUrlParameter("date");
+
+        if (status && exercise) {
+            if (status == "check") {
+                // completeExercise(date, exercise);
+                toggleRewards();
+            } else if (status == "flag") {
+                // flagExercise(date, exercise);
+                flagDate(date);
+            }
+        }
+
     });
-	
+
 
 
 </script>
@@ -338,7 +377,7 @@
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
                 <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; width:100%;">
-				<br>
+                <br>
                 <div>
                     <button class="button green">Accept</button>
                     <button class="button red">Decline</button>
@@ -348,7 +387,7 @@
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
                 <img src="jumping_jacks.jpg" alt="Jumping Jacks" style="height:auto; width:auto; max-width:55%; max-height: 100%">
-				<br>
+                <br>
                 <button class="button green">Accept</button>
                 <button class="button red">Decline</button>
             </div>
