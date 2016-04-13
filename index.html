@@ -79,6 +79,7 @@
     }
 
     .card {
+        /*opacity: 0.4;*/
         padding: 10px;
         padding-left: 15px;
         padding-right: 15px;
@@ -103,7 +104,6 @@
 
     .red {
         color:#fff!important;
-        /*background-color:#CC2C1B!important*/
     }
 
     .button {
@@ -470,24 +470,9 @@
 
     //call this to tick the rewards progress bar
     function toggleRewards(date) {
-        // var date = parseInt(getDate(date));
         var number_of_exercises = getEventCount(date);
-        console.log(number_of_exercises);
         var percentage_progress = 1./number_of_exercises * 80.;
         $(".rewards_progress").width(percentage_progress + "%");
-
-        // var curWidth = $('#rewards_progress').width();
-        // var newWidth = Math.min(curWidth+100, 300);
-
-        // var id = setInterval(frame, 10);
-        // function frame() {
-        //     if (curWidth >= newWidth) {
-        //         clearInterval(id);
-        //     } else {
-        //         curWidth++;
-        //         $("#rewards_progress").width(curWidth);
-        //     }
-        // }
     }
 
     var getEventCount = function(date){
@@ -517,11 +502,27 @@
         return dateArray[2];
     }
 
+    var currentActivity = null;
+
     $(document).ready(function() {
         var numberOfMessages = 0;
 
+        $( '#jumping_jacks_alarm' ).click(function() {
+            currentActivity = "jumping_jacks";
+        });
+
+        $( '#tree_alarm' ).click(function() {
+            currentActivity = "tree";
+        });
+
         $('#alarm-set').click(function() {
             notifyDate(calendarSelectedDay);
+            setEventTextColor(calendarSelectedDay, currentActivity, "#EBCA3A");
+            $('#' + currentActivity + '_card').find('p').css('color', '#EBCA3A');
+        });
+
+        $('#alarm-clear').click(function() {
+            location.reload();
         });
 
         box = $("#chat_div").chatbox( {
@@ -562,6 +563,10 @@
             }
         }
 
+        var status = getUrlParameter("status");
+        var exercise = getUrlParameter("exercise");
+        var date = getUrlParameter("date");
+
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev',
@@ -581,11 +586,24 @@
 			},
 			select: function(start, end, jsEvent, view) {
 				calendarSelectedDay = start.format('YYYY-MM-DD');
-                var date = parseInt(getDate(calendarSelectedDay));
-                if (date % 2 == 0) {
+                var dateNum = parseInt(getDate(calendarSelectedDay));
+                if (dateNum % 2 == 0) {
                     $('#jumping_jacks_card').css("display", "none");
                 } else {
                     $('#jumping_jacks_card').css("display", "table");
+                }
+
+                if (calendarSelectedDay != date) {
+                    $('#' + exercise + '_card').css('opacity', '1');
+                    $('#' + exercise + '_card').find('p').css('color', 'white');
+                } else {
+                    if (status && exercise) {
+                        if (status == "check") {
+                            $('#' + exercise + '_card').css('opacity', '0.4');
+                        } else if (status == "flag") {
+                            $('#' + exercise + '_card').find('p').css('color', 'orange');
+                        }
+                    }
                 }
 			},
             editable: false
@@ -597,17 +615,15 @@
 
 		calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
 
-        var status = getUrlParameter("status");
-        var exercise = getUrlParameter("exercise");
-        var date = getUrlParameter("date");
-
         if (status && exercise) {
             if (status == "check") {
                 setEventTextColor(date, exercise, "darkgray");
                 toggleRewards(date);
+                $('#' + exercise + '_card').css('opacity', '0.4');
             } else if (status == "flag") {
                 setEventTextColor(date, exercise, "red")
                 flagDate(date);
+                $('#' + exercise + '_card').find('p').css('color', 'orange');
             }
         }
 
@@ -653,7 +669,7 @@
             <div id="jumping_jacks_card" class="card">
                 <p class="card_heading" onclick="location.href='jumping_jacks.html?date='+calendarSelectedDay; return false;">Jumping Jacks</p>
                 <div class="buttons">
-                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36">
+                    <input id="jumping_jacks_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
                         <a href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>
@@ -666,7 +682,7 @@
             <div id="tree_card" class="card">
                 <p class="card_heading" onclick="location.href='tree.html?date='+calendarSelectedDay; return false;">Tree Pose</p>
                 <div class="buttons">
-                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36">
+                    <input id="tree_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
                         <a href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>
