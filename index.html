@@ -124,6 +124,105 @@
         /*font-weight: bold;*/
     }
 
+    .buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+
+    .alarm {
+        position: relative;
+        flex: 1;
+    }
+    .button-alarm img {
+        width: 1px;
+    }
+
+
+.check {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 1px;
+}
+
+.button-check:hover {
+    background-color: #00ff00;
+}
+
+.button-check:active {
+    background-color: white;
+    border: 1px solid #00ff00;
+}
+
+.button-check {
+    margin: auto;
+    height: 25px;
+    width: 25px;
+    background-color: #00e600;
+    border-radius: 12px;
+}
+
+.button-check:before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    top: 4%;
+    left: 5%;
+    margin: -2px 0 0 -3px;
+    height: 3px;
+    width: 5px;
+    border: solid white;
+    border-width: 0 0 3px 3px;
+    transform: rotate(-45deg);
+}
+
+.button-check:active:before {
+    border-color: #00ff00;
+}
+
+/* Flag */
+.flag {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 1px;
+}
+
+.button-flag:hover {
+    background-color: #FF950A;
+}
+
+.button-flag:active {
+    background-color: white;
+    border: 1px solid #FF950A;
+}
+
+.button-flag {
+    margin: auto;
+    height: 15px;
+    width: 15px;
+    background-color: #F58E07;
+    border-radius: 7px;
+}
+
+.button-flag:before {
+    content: "\2690";
+    display: inline-block;
+    top: 4px;
+    left: 4px;
+    font-size: 11px;
+    position: relative;
+    color: white;
+}
+
+.button-flag:active:before {
+    color: #FF950A;
+}
+
+
     /* Rewards */
     .bottom-right {
         background: #66C75B;
@@ -136,8 +235,7 @@
     .rewards_heading {
         color: #ffffff;
         padding: 5px;
-        margin: 5px;
-        margin-top: 10px;
+        margin-top: 5%;
         flex: 1;
         font-size: 22px;
     }
@@ -372,8 +470,17 @@
         <div id="scroll">
             <div class="card">
                 <p class="card_heading">Jumping Jacks</p>
-                <button class="button green">Accept</button>
-                <button class="button red">Decline</button>
+                <div class="buttons">
+                    <div class="alarm">
+                        <button class="button-alarm"><img src="alarm.png"></button> <!-- needs date -->
+                    </div>
+                    <div class="check">
+                        <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a> <!-- needs date -->
+                    </div>
+                    <div class="flag">
+                        <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
