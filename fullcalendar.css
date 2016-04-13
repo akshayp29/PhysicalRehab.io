@@ -834,6 +834,10 @@ a.fc-more:hover {
 	   making day-numbers bold also fixes the problem */
 }
 
+.fc-other-month {
+	background-color: #E2E2E2;
+}
+
 /* AgendaView all-day area
 --------------------------------------------------------------------------------------------------*/
 

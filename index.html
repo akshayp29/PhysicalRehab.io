@@ -583,6 +583,9 @@
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
+				if (event.start.isBefore($('#calendar').fullCalendar('getDate'))){
+					element.css("color", "darkgray")
+				}
 			},
 			select: function(start, end, jsEvent, view) {
 				calendarSelectedDay = start.format('YYYY-MM-DD');
