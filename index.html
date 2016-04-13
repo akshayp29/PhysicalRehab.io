@@ -182,13 +182,15 @@
 
 <script type="text/javascript">
 
-	var flagDay = function(dateString){
-		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-flag\" color=\"red\"></div>");
-	}
+	var calendarSelectedDay = null;
 	
-	var notifyDay = function(dateString){
-		$(".fc-day-number").filter("[data-date|='"+ dateString + "']").append("<div class=\"ui-icon ui-icon-clock\"></div>");
-	}
+	var flagDay = function(date){
+		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='flag.png' style='vertical-align:middle; float: right;'>");
+	};
+	
+	var notifyDay = function(date){
+		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='clock.png' style='vertical-align:middle; float: right;'>");
+	};
 
     //call this to tick the rewards progress bar
     function RewardsTick() {
@@ -263,58 +265,45 @@
                 $('#calendar').fullCalendar('select', date);
             },
             eventClick: function(calEvent, jsEvent, view) {
-                // pull up activity page for selected event (probably canned)
+                 $('#calendar').fullCalendar('select', calEvent.start);
             },
+			eventRender: function(event, element) {
+				element.css("color", event.nonDefaultColor);
+			},
+			select: function(start, end, jsEvent, view) {
+				calendarSelectedDay = start.format('YYYY-MM-DD');
+			},
             editable: false
         });
 
         $(window).resize(function() {
             $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
         });
-		
-		// calendar
-		cannedEvents = []
-		for(var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('05 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
-			cannedEvents.push({
-				title: "Stand on right foot",
-				start: m.format('YYYY-MM-DD')
-			});
-				
-			if (m.day() % 2 == 1){
-				cannedEvents.push({
-					title: "Push-ups",
-					start: m.format('YYYY-MM-DD')
-				});
-			}
-		}
-	
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev',
-				center: 'title',
-				right: 'today next'
-			},
-			height: $('#calendar').height(),
-			events: cannedEvents,
-			dayClick: function(date, jsEvent, view){
-				$('#calendar').fullCalendar('select', date);
-			},
-			eventClick: function(calEvent, jsEvent, view) {
-				// pull up activity page for selected event (probably canned)
-			},
-			editable: false
-		});
-		
-		$(window).resize(function() {
-			$('#calendar').fullCalendar('option', 'height',$('#calendar').height());
-		  });
 		  
-		  flagDay('2016-04-01');
-		  notifyDay('2016-04-02');
+		  calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+		  //flagDay('2016-04-01'); 
+		  //notifyDay('2016-04-02');
     });
 	
+	var getEventCount = function(date){
+		return $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
+			if (eventObj.start.isSame(date)) {
+				return true;
+			} else {
+				return false;
+			}
+		}).length;
+	};
 
-
+	var setEventTextColor = function(date, eventName, color){
+		console.log("Set event text color:");
+		event = $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
+			return eventObj.start.format('YYYY-MM-DD') == date && eventObj.title == eventName;
+		});
+		event[0].nonDefaultColor = color;
+		$('#calendar').fullCalendar( 'rerenderEvents' );
+	};
+	
 </script>
 </head>
 <body>
