@@ -179,7 +179,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Firefox has an annoying inner border */
 .fc button::-moz-focus-inner { margin: 0; padding: 0; }
-	
+
 .fc-state-default { /* non-theme */
 	border: 1px solid;
 }
@@ -202,7 +202,7 @@ NOTE: use percentage font sizes or else old IE chokes
 	margin: 0 .2em;
 	vertical-align: middle;
 }
-	
+
 /*
   button states
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
@@ -411,7 +411,7 @@ hr.fc-divider {
 	border-right: 0 hidden transparent;
 
 	/* no bottom borders on rows */
-	border-bottom: 0 hidden transparent; 
+	border-bottom: 0 hidden transparent;
 }
 
 .fc-row:first-child table {
@@ -521,7 +521,7 @@ temporary rendered events).
 .fc-event,
 .fc-event:hover,
 .ui-widget .fc-event {
-	color: #fff; /* default TEXT color */
+	color: darkblue; /* default TEXT color */
 	text-decoration: none; /* if <a> has an href */
 }
 
@@ -618,6 +618,9 @@ be a descendant of the grid when it is being dragged.
 .fc-day-grid-event {
 	margin: 1px 2px 0; /* spacing between events and edges */
 	padding: 0 1px;
+	background: transparent;
+	border: 0px;
+	color: darkblue;
 }
 
 
@@ -711,7 +714,7 @@ a.fc-more:hover {
 .fc .fc-toolbar > * > :first-child { /* extra precedence to override button border margins */
 	margin-left: 0;
 }
-	
+
 /* title text */
 
 .fc-toolbar h2 {
@@ -728,7 +731,7 @@ a.fc-more:hover {
 .fc-toolbar .ui-state-hover {
 	z-index: 2;
 }
-	
+
 .fc-toolbar .fc-state-down {
 	z-index: 3;
 }
@@ -1034,6 +1037,7 @@ be a descendant of the grid when it is being dragged.
 .fc-time-grid-event .fc-time,
 .fc-time-grid-event .fc-title {
 	padding: 0 1px;
+	/*color: black;*/
 }
 
 .fc-time-grid-event .fc-time {
@@ -1053,6 +1057,7 @@ be a descendant of the grid when it is being dragged.
 	/* put the time and title on the same line */
 	display: inline-block;
 	vertical-align: top;
+	/*color: black;*/
 }
 
 .fc-time-grid-event.fc-short .fc-time span {
