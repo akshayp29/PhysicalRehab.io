@@ -19,6 +19,21 @@
 
     var hasStarted = false;
 
+    var getUrlParameter = function(param) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === param) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+
     function sendMessageDocToPatient(name, message) {
         $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
     }
@@ -57,8 +72,13 @@
         }
     }
 
+    var calendarSelectedDay;
+
     $(document).ready(function() {
         var numberOfMessages = 0;
+
+        calendarSelectedDay = getUrlParameter("date");
+
         box = $("#chat_div").chatbox( {
             id:"Me",
             user:
@@ -127,11 +147,11 @@
     </div>
 
     <div class="check">
-        <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a>
+        <a href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
     </div>
 
     <div class="flag">
-        <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
+        <a href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
     </div>
 </div>
 

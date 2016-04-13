@@ -89,6 +89,7 @@
     }
 
     .card_heading {
+        cursor: pointer;
         text-align: center;
         margin-bottom: 5px;
         margin-top: 5px;
@@ -297,7 +298,7 @@
 
     a.button{
         background-color:#f6a7b3;
-        
+
         background-image:-webkit-linear-gradient(top, #f6a7b3, #f0a3af);
         background-image:-moz-linear-gradient(top, #f6a7b3, #f0a3af);
         background-image:linear-gradient(top, #f6a7b3, #f0a3af);
@@ -332,7 +333,7 @@
         z-index:10;
     }
 
-    #alarm-dialog, 
+    #alarm-dialog,
     #time-is-up{
         width:500px;
         height:375px;
@@ -441,11 +442,11 @@
 <script type="text/javascript">
 
 	var calendarSelectedDay = null;
-	
+
 	var flagDate = function(date){
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='flag.png' style='vertical-align:middle; float: right;'>");
 	};
-	
+
 	var notifyDate = function(date){
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='clock.png' style='vertical-align:middle; float: right;'>");
 	};
@@ -470,9 +471,9 @@
         var date = new Date(getUrlParameter("date"));
         var numberOfExercises;
         if (date.getDate() % 2 == 1) {
-            $(".rewards_progress").width("40%");
-        } else {
             $(".rewards_progress").width("80%");
+        } else {
+            $(".rewards_progress").width("40%");
         }
 
         // var curWidth = $('#rewards_progress').width();
@@ -560,8 +561,8 @@
         $(window).resize(function() {
             $('#calendar').fullCalendar('option', 'height',$('#calendar').height());
         });
-		  
-		 calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+
+		calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
 
         var status = getUrlParameter("status");
         var exercise = getUrlParameter("exercise");
@@ -588,7 +589,7 @@
 			}
 		}).length;
 	};
-	
+
 	var setEventTextColor = function(date, eventName, color){
 		console.log("Set event text color:");
 		event = $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
@@ -597,7 +598,7 @@
 		event[0].nonDefaultColor = color;
 		$('#calendar').fullCalendar( 'rerenderEvents' );
 	};
-	
+
 </script>
 </head>
 <body>
@@ -645,27 +646,27 @@
     <div class="bottom-left">
         <div id="scroll">
             <div class="card">
-                <p class="card_heading">Jumping Jacks</p>
+                <p class="card_heading" onclick="location.href='jumping_jacks.html?date='+calendarSelectedDay; return false;">Jumping Jacks</p>
                 <div class="buttons">
                     <input class="alarm-button" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
                     <div class="check">
-                        <a href="index.html?status=check&exercise=jumping_jacks" class="button-check"></a> <!-- needs date -->
+                        <a href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a href="index.html?status=flag&exercise=jumping_jacks" class="button-flag"></a>
+                        <a href="index.html?status=flag&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <p class="card_heading">Tree Pose</p>
+                <p class="card_heading" onclick="location.href='tree.html?date='+calendarSelectedDay; return false;">Tree Pose</p>
                 <div class="buttons">
                     <input class="alarm-button" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
                     <div class="check">
-                        <a href="index.html?status=check&exercise=right_foot" class="button-check"></a> <!-- needs date -->
+                        <a href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a href="index.html?status=flag&exercise=right_foot" class="button-flag"></a>
+                        <a href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
                     </div>
                 </div>
             </div>
