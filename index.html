@@ -103,7 +103,7 @@
 
     .red {
         color:#fff!important;
-        background-color:#f44336!important
+        /*background-color:#CC2C1B!important*/
     }
 
     .button {
@@ -187,6 +187,14 @@
     }
 
     .button-check:active:before {
+        border-color: #00ff00;
+    }
+
+    .button-check-clicked {
+        background-color: white;
+    }
+
+    .button-check-clicked:before {
         border-color: #00ff00;
     }
 
@@ -297,17 +305,13 @@
     }
 
     a.button{
-        background-color:#f6a7b3;
-
-        background-image:-webkit-linear-gradient(top, #f6a7b3, #f0a3af);
+        /*background-color:#f6a7b3;*/
+        background-image:-webkit-linear-gradient(top, #CC2C1B, #CC2C1B);
         background-image:-moz-linear-gradient(top, #f6a7b3, #f0a3af);
-        background-image:linear-gradient(top, #f6a7b3, #f0a3af);
-
-        border:1px solid #eb9ba7;
+        /*background-image:linear-gradient(top, #f6a7b3, #f0a3af);*/
+        border:1px solid #9C2114;
         border-radius:2px;
-
         box-shadow:0 2px 2px #ccc;
-
         color:#fff;
         text-decoration: none !important;
         padding:15px 20px;
@@ -335,8 +339,8 @@
 
     #alarm-dialog,
     #time-is-up{
-        width:500px;
-        height:375px;
+        width:300px;
+        height:220px;
         background-color:#fff;
         border-radius:2px;
         box-shadow: 0 0 8px rgba(0,0,0,0.2);
@@ -350,19 +354,19 @@
     #alarm-dialog h2{
         text-transform: uppercase;
         font-size:18px;
-        color:#5e6268;
-        padding: 50px 0;
+        color: #1C1C1C;
+        padding: 20px 0;
     }
 
     #alarm-dialog label{
         box-sizing: content-box;
         text-transform: uppercase;
-        background-color: #f4f4f4;
-        width: 80px;
-        height: 62px;
+        background-color: #D6D6D6;
+        width: 140px;
+        height: 48px;
         font-size: 11px;
         display: inline-block;
-        padding: 10px;
+        padding: 5px;
         margin: 4px;
     }
 
@@ -374,13 +378,13 @@
         padding: 6px;
         outline: none;
         text-align: center;
-        width: 59px;
-        margin: 10px auto;
+        width: 130px;
+        margin: 5px auto;
         background-color:#fff;
     }
 
     #alarm-dialog .button-holder{
-        padding-top: 50px;
+        padding-top: 20px;
         padding-bottom:0;
     }
 
@@ -391,13 +395,11 @@
     }
 
     .button.blue{
-        background-color:#82cddd;
-
-        background-image:-webkit-linear-gradient(top, #86d3e4, #82cddd);
-        background-image:-moz-linear-gradient(top, #86d3e4, #82cddd);
-        background-image:linear-gradient(top, #86d3e4, #82cddd);
-
-        border-color:#72c1d2;
+        /*background-color:#82cddd;*/
+        background-image:-webkit-linear-gradient(top, #0043DE, #0043DE);
+        background-image:-moz-linear-gradient(top, #0043DE, #0043DE);
+        /*background-image:linear-gradient(top, #0043DE, #0043DE);*/
+        border-color:#002F9E;
     }
 
     #alarm-dialog .close{
@@ -467,14 +469,12 @@
     };
 
     //call this to tick the rewards progress bar
-    function toggleRewards() {
-        var date = new Date(getUrlParameter("date"));
-        var numberOfExercises;
-        if (date.getDate() % 2 == 1) {
-            $(".rewards_progress").width("80%");
-        } else {
-            $(".rewards_progress").width("40%");
-        }
+    function toggleRewards(date) {
+        // var date = parseInt(getDate(date));
+        var number_of_exercises = getEventCount(date);
+        console.log(number_of_exercises);
+        var percentage_progress = 1./number_of_exercises * 80.;
+        $(".rewards_progress").width(percentage_progress + "%");
 
         // var curWidth = $('#rewards_progress').width();
         // var newWidth = Math.min(curWidth+100, 300);
@@ -490,12 +490,40 @@
         // }
     }
 
+    var getEventCount = function(date){
+        return $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
+            if (eventObj.start.isSame(date)) {
+                return true;
+            } else {
+                return false;
+            }
+        }).length;
+    };
+
+    var setEventTextColor = function(date, eventName, color){
+        event = $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
+            return eventObj.start.format('YYYY-MM-DD') == date && eventObj.id == eventName;
+        });
+        event[0].nonDefaultColor = color;
+        $('#calendar').fullCalendar( 'rerenderEvents' );
+    };
+
     function sendMessageDocToPatient(name, message) {
         $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
     }
 
+    function getDate(date) {
+        var dateArray = date.split("-");
+        return dateArray[2];
+    }
+
     $(document).ready(function() {
         var numberOfMessages = 0;
+
+        $('#alarm-set').click(function() {
+            notifyDate(calendarSelectedDay);
+        });
+
         box = $("#chat_div").chatbox( {
             id:"Me",
             user:
@@ -503,8 +531,6 @@
                     key : "value"
                 },
             title : "Messages to Doc Brown",
-            // right_offset: 0, // relative to the right of the screen
-            // bottom_offset: 0, // relative to the bottom of the browser window
 
             messageSent : function(id, user, msg) {
                 $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
@@ -512,7 +538,6 @@
                 if (numberOfMessages == 1) {
                     setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
                 }
-
             }
         });
         if (numberOfMessages == 0) {
@@ -523,13 +548,15 @@
         cannedEvents = []
         for (var m = moment('04 01 2016', 'MM DD YYYY'); m.isBefore('06 01 2016', 'MM DD YYYY'); m.add(1, 'days')){
             cannedEvents.push({
+                id: "tree",
                 title: "Tree pose",
                 start: m.format('YYYY-MM-DD')
             });
 
             if (m.date() % 2 == 1){
                 cannedEvents.push({
-                    title: "Push-ups",
+                    id: "jumping_jacks",
+                    title: "Jumping Jacks",
                     start: m.format('YYYY-MM-DD')
                 });
             }
@@ -547,13 +574,19 @@
                 $('#calendar').fullCalendar('select', date);
             },
             eventClick: function(calEvent, jsEvent, view) {
-                 $('#calendar').fullCalendar('select', calEvent.start);
+                $('#calendar').fullCalendar('select', calEvent.start);
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
 			},
 			select: function(start, end, jsEvent, view) {
 				calendarSelectedDay = start.format('YYYY-MM-DD');
+                var date = parseInt(getDate(calendarSelectedDay));
+                if (date % 2 == 0) {
+                    $('#jumping_jacks_card').css("display", "none");
+                } else {
+                    $('#jumping_jacks_card').css("display", "table");
+                }
 			},
             editable: false
         });
@@ -570,34 +603,15 @@
 
         if (status && exercise) {
             if (status == "check") {
-                // completeExercise(date, exercise);
-                toggleRewards();
+                setEventTextColor(date, exercise, "darkgray");
+                toggleRewards(date);
             } else if (status == "flag") {
-                // flagExercise(date, exercise);
+                setEventTextColor(date, exercise, "red")
                 flagDate(date);
             }
         }
 
     });
-
-	var getEventCount = function(date){
-		return $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
-			if (eventObj.start.isSame(date)) {
-				return true;
-			} else {
-				return false;
-			}
-		}).length;
-	};
-
-	var setEventTextColor = function(date, eventName, color){
-		console.log("Set event text color:");
-		event = $('#calendar').fullCalendar( 'clientEvents', function(eventObj){
-			return eventObj.start.format('YYYY-MM-DD') == date && eventObj.title == eventName;
-		});
-		event[0].nonDefaultColor = color;
-		$('#calendar').fullCalendar( 'rerenderEvents' );
-	};
 
 </script>
 </head>
@@ -607,21 +621,12 @@
     <div id="alarm-dialog">
         <h2>Set alarm at</h2>
         <label class="hours">
-            Hour
-            <input type="number" value="0" min="0" />
-        </label>
-        <label class="minutes">
-            Minute
-            <input type="number" value="0" min="0" />
-        </label>
-        <label class="seconds">
-            Second
-            <input type="number" value="0" min="0" />
+            <input type="time" />
         </label>
 
         <div class="button-holder">
             <a id="alarm-set" class="button blue">Set</a>
-            <a id="alarm-clear" class="button red">Clear</a>
+            <a id="alarm-clear" class="button red">Delete</a>
         </div>
 
         <a class="close"></a>
@@ -645,10 +650,10 @@
 
     <div class="bottom-left">
         <div id="scroll">
-            <div class="card">
+            <div id="jumping_jacks_card" class="card">
                 <p class="card_heading" onclick="location.href='jumping_jacks.html?date='+calendarSelectedDay; return false;">Jumping Jacks</p>
                 <div class="buttons">
-                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
+                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
                         <a href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>
@@ -658,10 +663,10 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div id="tree_card" class="card">
                 <p class="card_heading" onclick="location.href='tree.html?date='+calendarSelectedDay; return false;">Tree Pose</p>
                 <div class="buttons">
-                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36"> <!-- needs date -->
+                    <input class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
                         <a href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
                     </div>

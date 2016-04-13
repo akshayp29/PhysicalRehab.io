@@ -507,6 +507,7 @@ temporary rendered events).
 --------------------------------------------------------------------------------------------------*/
 
 .fc-event {
+	cursor: context-menu;
 	position: relative; /* for resize handle and other inner positioning */
 	display: block; /* make the <a> tag block */
 	font-size: .85em;
