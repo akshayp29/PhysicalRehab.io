@@ -7,9 +7,6 @@
             id: null, //id for the DOM element
             title: null, // title of the chatbox
             user: null, // can be anything associated with this chatbox
-            // right_offset: 0, // relative to right edge of the browser window
-            // bottom_offset: 0, // relative to the bottom edge of the browser window
-            // width: 210, // width of the chatbox
 
             messageSent: function(id, user, msg) {
                 this.boxManager.addMsg(user.first_name, msg);
@@ -19,7 +16,7 @@
                 init: function(elem) {
                     this.elem = elem;
                 },
-                addMsg: function(peer, msg) {
+                addMsg: function(peer, msg, time_sent) {
                     var self = this;
                     var box = self.elem.uiChatboxLog;
                     var e = document.createElement('div');
@@ -40,6 +37,12 @@
                         systemMessage ? "i" : "span");
                     $(msgElement).text(msg);
                     e.appendChild(msgElement);
+
+                    var timestamp = document.createElement("div");
+                    $(timestamp).addClass("timestamp");
+                    $(timestamp).text(time_sent);
+                    e.appendChild(timestamp);
+
                     $(e).addClass("ui-chatbox-msg");
                     $(e).css("fontSize", "16px");
                     $(e).css("maxWidth", $(box).width());

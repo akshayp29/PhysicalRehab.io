@@ -10,14 +10,16 @@
 <!--jQuery and jQuery UI with jQuery Chat-->
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="jquery-ui.js"></script>
-<link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
-<script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+<link type="text/css" href="chatbox.css" rel="stylesheet" />
+<script type="text/javascript" src="chatbox.js"></script>
 <script src='moment.js'></script>
 <script src='fullcalendar.js'></script>
 
 <script type="text/javascript">
 
     var hasStarted = false;
+    var time_remaining;
+    var timeInterval;
 
     var getUrlParameter = function(param) {
         var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -34,8 +36,8 @@
         }
     };
 
-    function sendMessageDocToPatient(name, message) {
-        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
+    function sendMessageDocToPatient(name, message, timestamp) {
+        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message, timestamp);
     }
 
     function getTimeRemaining(endtime) {
@@ -49,26 +51,37 @@
         };
     }
 
-    function initializeClock(id, endtime, start) {
-        if (hasStarted) return;
-        if (start) hasStarted = true;
-        var clock = document.getElementById(id);
+    function initializeClock(endtime, start) {
+        if (hasStarted) {
+            return;
+        }
+
+        if (start) {
+            hasStarted = true;
+        }
+
+        var clock = document.getElementById('clockdiv');
         var minutesSpan = clock.querySelector('.minutes');
         var secondsSpan = clock.querySelector('.seconds');
 
         function updateClock() {
-            var t = getTimeRemaining(endtime);
-            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+            time_remaining = getTimeRemaining(endtime);
+            minutesSpan.innerHTML = ('0' + time_remaining.minutes).slice(-2);
+            secondsSpan.innerHTML = ('0' + time_remaining.seconds).slice(-2);
 
-            if (t.total <= 0) {
-                clearInterval(timeinterval);
+            if (time_remaining.total == 0) {
+                var audio = new Audio('timer_sound.wav');
+                audio.play();
+            }
+
+            if (time_remaining.total <= 0) {
+                clearInterval(timeInterval);
             }
         }
 
         updateClock();
         if (start) {
-            var timeinterval = setInterval(updateClock, 1000);
+            timeInterval = setInterval(updateClock, 1000);
         }
     }
 
@@ -81,29 +94,70 @@
 
         box = $("#chat_div").chatbox( {
             id:"Me",
-            user:
-                {
-                    key : "value"
-                },
             title : "Messages to Doc Brown",
-            // right_offset: 0, // relative to the right of the screen
-            // bottom_offset: 0, // relative to the bottom of the browser window
 
             messageSent : function(id, user, msg) {
-                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
-                numberOfMessages += 1;
-                if (numberOfMessages == 1) {
-                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
+                var now = new Date();
+                console.log(now.getHours());
+                console.log(now.getMinutes());
+
+                var am_pm;
+                if (now.getHours() >= 12) {
+                    am_pm = "PM";
+                } else {
+                    am_pm = "AM";
                 }
 
+                var hours;
+                if (now.getHours() == 0) {
+                    hours = "12";
+                } else if (now.getHours() > 12) {
+                    hours = now.getHours() - 12;
+                } else {
+                    hours = now.getHours();
+                }
+
+                var timestamp = hours + ":" + now.getMinutes() + " " + am_pm;
+
+                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg, timestamp);
+                numberOfMessages += 1;
+                if (numberOfMessages == 1) {
+                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!", "' + timestamp + '");', 2000);
+                }
             }
         });
         if (numberOfMessages == 0) {
-            sendMessageDocToPatient("Doc Brown", "How's the training going?");
+            sendMessageDocToPatient("Doc Brown", "How's the training going?", "12:00 PM");
         }
+        // SET TIMER LENGTH HERE
+        var numMinutes = 1;
+        initializeClock(new Date(Date.parse(new Date()) + numMinutes * 60 * 1000), false);
 
-        var deadline = new Date(Date.parse(new Date()) + 1 * 60 * 1000); // SET TIMER LENGTH HERE
-        initializeClock('clockdiv', deadline, false);
+        $('#start_pause_button').click( function() {
+            var current_state = $('#start_pause_button').text();
+
+            if (current_state == "Start") { //Clicking start button
+                $('#start_pause_button').text("Pause");
+                initializeClock(new Date(Date.parse(new Date()) + numMinutes * 60 * 1000), true);
+
+            } else if (current_state == "Pause") { // Clicking pause button
+                $('#start_pause_button').text("Resume");
+                clearInterval(timeInterval);
+                hasStarted = false;
+
+            } else if (current_state == "Resume") { // Clicking resume button
+                $('#start_pause_button').text("Pause");
+                initializeClock(new Date(Date.parse(new Date()) + time_remaining.total), true);
+            }
+
+        });
+
+        $('#reset_button').click( function() {
+            hasStarted = false;
+            $('#start_pause_button').text("Start");
+            clearInterval(timeInterval);
+            initializeClock(new Date(Date.parse(new Date()) + numMinutes * 60 * 1000), false);
+        })
 
     });
 
@@ -115,7 +169,8 @@
 <body>
 
 <div class="page_title" height="100%">
-    <p class="page_title_text">PhysicalRehab.io</p>
+    <button class="page_title_text" onclick="location.href='index.html'">PhysicalRehab.io</button>
+    <button id="x-button" class="x-button" onclick="location.href='index.html?date='+calendarSelectedDay">&#10006;</button>
 </div>
 
 <div class="top">
@@ -143,15 +198,18 @@
                 <div class="smalltext">Seconds</div>
             </div>
         </div>
-        <button class="start_button" onclick="initializeClock('clockdiv', new Date(Date.parse(new Date()) + 1 * 60 * 1000), true)">Start</button>
+        <div id="timer_buttons" class="buttons">
+            <button id="start_pause_button" class="timer_button">Start</button>
+            <button id="reset_button" class="timer_button">Reset</button>
+        </div>
     </div>
 
     <div class="check">
-        <a href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+        <a title="Complete?" href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
     </div>
 
     <div class="flag">
-        <a href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+        <a title="Having trouble?" href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
     </div>
 </div>
 
