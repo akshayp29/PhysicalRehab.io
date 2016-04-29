@@ -580,6 +580,8 @@
             },
             eventClick: function(calEvent, jsEvent, view) {
                 $('#calendar').fullCalendar('select', calEvent.start);
+				var map = {"Tree pose":"tree.html", "Jumping Jacks":"jumping_jacks.html"}
+				location.href= map[calEvent.title] + '?date=' + calendarSelectedDay;
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
