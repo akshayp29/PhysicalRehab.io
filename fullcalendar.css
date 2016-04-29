@@ -524,7 +524,7 @@ temporary rendered events).
 .ui-widget .fc-event {
 	color: darkblue; /* default TEXT color */
 	text-decoration: none; /* if <a> has an href */
-	cursor: pointer;
+	
 }
 
 .fc-event[href],
@@ -547,6 +547,10 @@ temporary rendered events).
 .fc-event .fc-content {
 	position: relative;
 	z-index: 2;
+}
+
+.fc-title {
+	cursor: pointer;
 }
 
 .fc-event .fc-resizer {
