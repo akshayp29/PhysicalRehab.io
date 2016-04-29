@@ -67,7 +67,9 @@
 }
 
 .ui-chatbox-msg {
+    display: absolute;
     margin-top: 10px;
+    width: 100%;
     float: left;
     clear: both;
     white-space: pre-wrap;      /* CSS3 */
@@ -76,4 +78,17 @@
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
     font-size: 12px;
+}
+
+.timestamp {
+    display: relative;
+    visibility: hidden;
+    color: grey;
+    margin-top: 5px;
+    float: right;
+    font-size: 13px;
+}
+
+.ui-chatbox-msg:hover .timestamp {
+    visibility: visible;
 }

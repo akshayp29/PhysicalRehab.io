@@ -10,17 +10,16 @@
 <!--jQuery and jQuery UI with jQuery Chat-->
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="jquery-ui.js"></script>
-<link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
-<script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+<link type="text/css" href="chatbox.css" rel="stylesheet" />
+<script type="text/javascript" src="chatbox.js"></script>
 <script src='moment.js'></script>
 <script src='fullcalendar.js'></script>
 
 <script type="text/javascript">
 
-    function sendMessageDocToPatient(name, message) {
-        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
+    function sendMessageDocToPatient(name, message, timestamp) {
+        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message, timestamp);
     }
-
     var getUrlParameter = function(param) {
         var sPageURL = decodeURIComponent(window.location.search.substring(1)),
             sURLVariables = sPageURL.split('&'),
@@ -45,26 +44,43 @@
         var numberOfMessages = 0;
         box = $("#chat_div").chatbox( {
             id:"Me",
-            user:
-                {
-                    key : "value"
-                },
             title : "Messages to Doc Brown",
-            // right_offset: 0, // relative to the right of the screen
-            // bottom_offset: 0, // relative to the bottom of the browser window
 
             messageSent : function(id, user, msg) {
-                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
-                numberOfMessages += 1;
-                if (numberOfMessages == 1) {
-                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
+                var now = new Date();
+                console.log(now.getHours());
+                console.log(now.getMinutes());
+
+                var am_pm;
+                if (now.getHours() >= 12) {
+                    am_pm = "PM";
+                } else {
+                    am_pm = "AM";
                 }
 
+                var hours;
+                if (now.getHours() == 0) {
+                    hours = "12";
+                } else if (now.getHours() > 12) {
+                    hours = now.getHours() - 12;
+                } else {
+                    hours = now.getHours();
+                }
+
+                var timestamp = hours + ":" + now.getMinutes() + " " + am_pm;
+
+                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg, timestamp);
+                numberOfMessages += 1;
+                if (numberOfMessages == 1) {
+                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!", "' + timestamp + '");', 2000);
+                }
             }
         });
+
         if (numberOfMessages == 0) {
-            sendMessageDocToPatient("Doc Brown", "How's the training going?");
+            sendMessageDocToPatient("Doc Brown", "How's the training going?", "12:00 PM");
         }
+
     });
 
 
@@ -74,7 +90,8 @@
 <body>
 
 <div class="page_title" height="100%">
-    <p class="page_title_text">PhysicalRehab.io</p>
+    <button class="page_title_text" onclick="location.href='index.html'">PhysicalRehab.io</button>
+    <button id="x-button" class="x-button" onclick="location.href='index.html?date='+calendarSelectedDay">&#10006;</button>
 </div>
 
 <div class="top">
@@ -93,10 +110,10 @@
 <div class="bottom">
     <div class="clock"></div>
     <div class="check">
-        <a href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+        <a title="Complete?" href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
     </div>
     <div class="flag">
-        <a href="index.html?status=flag&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;"class="button-flag"></a>
+        <a title="Having trouble?" href="index.html?status=flag&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;"class="button-flag"></a>
     </div>
 
 </div>

@@ -33,6 +33,9 @@
         margin-left: 5px;
         margin-right: 0;
         font-weight: bold;
+        background: transparent;
+        border: none;
+        cursor: pointer;
     }
 
     /* Grid layout */
@@ -412,20 +415,6 @@
         cursor:pointer;
     }
 
-
-    #time-is-up{
-        height: 240px;
-    }
-
-    #time-is-up h2{
-        padding: 60px 0 40px;
-        font-size: 30px;
-    }
-
-    #time-is-up .button{
-        padding: 12px 20px;
-        box-shadow: 0 2px 2px #eee;
-    }
 </style>
 
 <!--jQuery UI CSS-->
@@ -435,11 +424,11 @@
 <!--jQuery and jQuery UI with jQuery Chat-->
 <script type="text/javascript" src="jquery-1.8.3.js"></script>
 <script type="text/javascript" src="jquery-ui.js"></script>
-<link type="text/css" href="jquery.ui.chatbox.css" rel="stylesheet" />
-<script type="text/javascript" src="jquery.ui.chatbox.js"></script>
+<link type="text/css" href="chatbox.css" rel="stylesheet" />
+<script type="text/javascript" src="chatbox.js"></script>
 <script src='moment.js'></script>
 <script src='fullcalendar.js'></script>
-    <script src='script.js'></script>
+<script src='alarm.js'></script>
 
 <script type="text/javascript">
 
@@ -493,8 +482,8 @@
         $('#calendar').fullCalendar( 'rerenderEvents' );
     };
 
-    function sendMessageDocToPatient(name, message) {
-        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message);
+    function sendMessageDocToPatient(name, message, timestamp) {
+        $("#chat_div").chatbox("option", "boxManager").addMsg(name, message, timestamp);
     }
 
     function getDate(date) {
@@ -516,33 +505,56 @@
         });
 
         $('#alarm-set').click(function() {
+            var inputted_time = $('#time_input').val();
+            if (inputted_time == "") {
+                alert("Please enter a valid time!");
+                return;
+            }
+
+            var dialog = $('#alarm-dialog').parent();
+            dialog.trigger('hide');
+
             notifyDate(calendarSelectedDay);
             setEventTextColor(calendarSelectedDay, currentActivity, "#EBCA3A");
             $('#' + currentActivity + '_card').find('p').css('color', '#EBCA3A');
         });
 
-        $('#alarm-clear').click(function() {
-            location.reload();
-        });
-
         box = $("#chat_div").chatbox( {
             id:"Me",
-            user:
-                {
-                    key : "value"
-                },
             title : "Messages to Doc Brown",
 
             messageSent : function(id, user, msg) {
-                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                var now = new Date();
+                console.log(now.getHours());
+                console.log(now.getMinutes());
+
+                var am_pm;
+                if (now.getHours() >= 12) {
+                    am_pm = "PM";
+                } else {
+                    am_pm = "AM";
+                }
+
+                var hours;
+                if (now.getHours() == 0) {
+                    hours = "12";
+                } else if (now.getHours() > 12) {
+                    hours = now.getHours() - 12;
+                } else {
+                    hours = now.getHours();
+                }
+
+                var timestamp = hours + ":" + now.getMinutes() + " " + am_pm;
+
+                $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg, timestamp);
                 numberOfMessages += 1;
                 if (numberOfMessages == 1) {
-                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!");', 2000);
+                    setTimeout('sendMessageDocToPatient("Doc Brown", "I\'ll take care of it!", "' + timestamp + '");', 2000);
                 }
             }
         });
         if (numberOfMessages == 0) {
-            sendMessageDocToPatient("Doc Brown", "How's the training going?");
+            sendMessageDocToPatient("Doc Brown", "How's the training going?", "12:00 PM");
         }
 
         // calendar
@@ -612,7 +624,7 @@
                 }
 			},
 			unselect: function(view, jsEvent){
-				
+
 			},
             editable: false
         });
@@ -638,7 +650,7 @@
 		$(".fc-today-button").click(function(){
 			$('#calendar').fullCalendar('select', $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD'));
 		});
-		
+
 		$('#calendar').fullCalendar('select', date);
     });
 
@@ -650,7 +662,7 @@
     <div id="alarm-dialog">
         <h2>Set alarm at</h2>
         <label class="hours">
-            <input type="time" />
+            <input id="time_input" type="time" />
         </label>
 
         <div class="button-holder">
@@ -663,7 +675,7 @@
 </div>
 
 <div class="page_title" height="100%">
-    <p class="page_title_text">PhysicalRehab.io</p>
+    <button class="page_title_text" onclick="location.href='index.html'">PhysicalRehab.io</button>
 </div>
 
 <div class="top">
