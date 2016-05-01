@@ -443,7 +443,7 @@ function getCookie(cname) {
             return c.substring(name.length, c.length);
         }
     }
-    return "";
+    return null;
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -451,18 +451,6 @@ function setCookie(cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-function checkCookie() {
-    var user=getCookie("username");
-    if (user != "") {
-        alert("Welcome again " + user);
-    } else {
-       user = prompt("Please enter your name:","");
-       if (user != "" && user != null) {
-           setCookie("username", user, 30);
-       }
-    }
 }
 </script>
 
@@ -477,21 +465,6 @@ function checkCookie() {
 	var notifyDate = function(date){
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='clock.png' style='vertical-align:middle; float: right;'>");
 	};
-
-    var getUrlParameter = function(param) {
-        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
-
-        for (i = 0; i < sURLVariables.length; i++) {
-            sParameterName = sURLVariables[i].split('=');
-
-            if (sParameterName[0] === param) {
-                return sParameterName[1] === undefined ? true : sParameterName[1];
-            }
-        }
-    };
 
     //call this to tick the rewards progress bar
     function toggleRewards(date) {
@@ -611,9 +584,9 @@ function checkCookie() {
             }
         }
 
-        var status = getUrlParameter("status");
-        var exercise = getUrlParameter("exercise");
-        var date = getUrlParameter("date");
+        var status = getCookie("current_status");
+        var exercise = getCookie("current_exercise");
+        var date = ("current_date");
 
         $('#calendar').fullCalendar({
             header: {
@@ -692,7 +665,7 @@ function checkCookie() {
 
 </script>
 </head>
-<body onload="checkCookie()">
+<body>
 
 <div class="overlay">
     <div id="alarm-dialog">
@@ -728,27 +701,27 @@ function checkCookie() {
     <div class="bottom-left">
         <div id="scroll">
             <div id="jumping_jacks_card" class="card">
-                <p class="card_heading" onclick="location.href='jumping_jacks.html?date='+calendarSelectedDay; return false;">Jumping Jacks</p>
+                <p class="card_heading" onclick="location.href='jumping_jacks.html'; setCookie('current_date', calendarSelectedDay, 30);">Jumping Jacks</p>
                 <div class="buttons">
                     <input id="jumping_jacks_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
-                        <a title="Complete?" href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+                        <a title="Complete?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'check', 30); setCookie('current_exercise', 'jumping_jacks', 30);" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a title="Having trouble?" href="index.html?status=flag&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+                        <a title="Having trouble?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'flag', 30); setCookie('current_exercise', 'jumping_jacks', 30);" class="button-flag"></a>
                     </div>
                 </div>
             </div>
 
             <div id="tree_card" class="card">
-                <p class="card_heading" onclick="location.href='tree.html?date='+calendarSelectedDay; return false;">Tree Pose</p>
+                <p class="card_heading" onclick="location.href='tree.html'; setCookie('current_date', calendarSelectedDay, 30);">Tree Pose</p>
                 <div class="buttons">
                     <input id="tree_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
-                        <a title="Complete?" href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+                        <a title="Complete?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'check', 30); setCookie('current_exercise', 'tree', 30);" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a title="Having trouble?" href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+                        <a title="Having trouble?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'flag', 30); setCookie('current_exercise', 'tree', 30);" class="button-flag"></a>
                     </div>
                 </div>
             </div>
