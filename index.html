@@ -467,9 +467,9 @@ function setCookie(cname, cvalue, exdays) {
 	};
 
     //call this to tick the rewards progress bar
-    function toggleRewards(date) {
+    function toggleRewards(date, num) {
         var number_of_exercises = getEventCount(date);
-        var percentage_progress = 1./number_of_exercises * 80.;
+        var percentage_progress = num/number_of_exercises * 80.;
         $(".rewards_progress").width(percentage_progress + "%");
     }
 
@@ -586,7 +586,52 @@ function setCookie(cname, cvalue, exdays) {
 
         var status = getCookie("current_status");
         var exercise = getCookie("current_exercise");
-        var date = ("current_date");
+        var sent_date = getCookie("current_date");
+
+        var status_list_str = getCookie("status");
+        var status_list;
+
+        if (!status_list_str) {
+            status_list = [];
+        } else {
+            status_list = JSON.parse(status_list_str);
+        }
+
+        if (status && status != "") {
+            status_list.push(status);
+            setCookie("status", JSON.stringify(status_list), 30);
+            setCookie("current_status", "");
+        }
+
+        var exercise_list_str = getCookie("exercise");
+        var exercise_list;
+
+        if (!exercise_list_str) {
+            exercise_list = [];
+        } else {
+            exercise_list = JSON.parse(exercise_list_str);
+        }
+
+        if (exercise && exercise != "") {
+            exercise_list.push(exercise);
+            setCookie("exercise", JSON.stringify(exercise_list), 30);
+            setCookie("current_exercise", "");
+        }
+
+        var date_list_str = getCookie("date");
+        var date_list;
+
+        if (!date_list_str) {
+            date_list = [];
+        } else {
+            date_list = JSON.parse(date_list_str);
+        }
+
+        if (sent_date && sent_date != "") {
+            date_list.push(sent_date);
+            setCookie("date", JSON.stringify(date_list), 30);
+            setCookie("current_date", "");
+        }
 
         $('#calendar').fullCalendar({
             header: {
@@ -602,7 +647,8 @@ function setCookie(cname, cvalue, exdays) {
             eventClick: function(calEvent, jsEvent, view) {
                 $('#calendar').fullCalendar('select', calEvent.start);
 				var map = {"Tree pose":"tree.html", "Jumping Jacks":"jumping_jacks.html"}
-				location.href= map[calEvent.title] + '?date=' + calendarSelectedDay;
+                setCookie('current_date', calendarSelectedDay, 30);
+				location.href= map[calEvent.title];
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
@@ -619,18 +665,31 @@ function setCookie(cname, cvalue, exdays) {
                     $('#jumping_jacks_card').css("display", "table");
                 }
 
-                if (calendarSelectedDay != date) {
-                    $('#' + exercise + '_card').css('opacity', '1');
-                    $('#' + exercise + '_card').find('p').css('color', 'white');
-                } else {
-                    if (status && exercise) {
-                        if (status == "check") {
-                            $('#' + exercise + '_card').css('opacity', '0.4');
-                        } else if (status == "flag") {
-                            $('#' + exercise + '_card').find('p').css('color', 'orange');
+                if (calendarSelectedDay.substring(0, 7) != '2016-04' && calendarSelectedDay.substring(0, 7) != '2016-05') {
+                    $('#tree_card').css("display", "none");
+                    $('#jumping_jacks_card').css("display", "none");
+                }
+
+                $('#tree_card').css('opacity', '1');
+                $('#tree_card').find('p').css('color', 'white');
+
+                $('#jumping_jacks_card').css('opacity', '1');
+                $('#jumping_jacks_card').find('p').css('color', 'white');
+
+                var num = 0.;
+
+                for (i = 0; i < date_list.length; i++) {
+                    if (date_list[i] == calendarSelectedDay) {
+                        if (status_list[i] == "flag") {
+                            $('#' + exercise_list[i] + '_card').find('p').css('color', 'orange');
+                        } else if (status_list[i] == "check") {
+                            num += 1.;
+                            $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
                         }
                     }
                 }
+
+                toggleRewards(calendarSelectedDay, num);
 			},
 			unselect: function(view, jsEvent){
 
@@ -644,15 +703,14 @@ function setCookie(cname, cvalue, exdays) {
 
 		calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
 
-        if (status && exercise) {
-            if (status == "check") {
-                setEventTextColor(date, exercise, "darkgray");
-                toggleRewards(date);
-                $('#' + exercise + '_card').css('opacity', '0.4');
-            } else if (status == "flag") {
-                setEventTextColor(date, exercise, "red")
-                flagDate(date);
-                $('#' + exercise + '_card').find('p').css('color', 'orange');
+        for (i = 0; i < date_list.length; i++) {
+            if (status_list[i] == "flag") {
+                setEventTextColor(date_list[i], exercise_list[i], "red")
+                flagDate(date_list[i]);
+                $('#' + exercise_list[i] + '_card').find('p').css('color', 'orange');
+            } else if (status_list[i] == "check") {
+                setEventTextColor(date_list[i], exercise_list[i], "darkgray");
+                $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
             }
         }
 
@@ -660,7 +718,11 @@ function setCookie(cname, cvalue, exdays) {
 			$('#calendar').fullCalendar('select', $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD'));
 		});
 
-		$('#calendar').fullCalendar('select', date);
+        if (sent_date && sent_date != "") {
+    		$('#calendar').fullCalendar('select', sent_date);
+        } else {
+            $('#calendar').fullCalendar('select', calendarSelectedDay);
+        }
     });
 
 </script>
