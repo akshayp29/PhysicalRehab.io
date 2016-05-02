@@ -78,7 +78,12 @@ function setCookie(cname, cvalue, exdays) {
                     hours = now.getHours();
                 }
 
-                var timestamp = hours + ":" + now.getMinutes() + " " + am_pm;
+                var minutes = now.getMinutes();
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+
+                var timestamp = hours + ":" + minutes + " " + am_pm;
 
                 $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg, timestamp);
                 numberOfMessages += 1;
