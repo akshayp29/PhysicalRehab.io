@@ -9118,7 +9118,7 @@ function Calendar_constructor(element, overrides) {
     function updateTodayButton() {
         var now = t.getNow();
         if (now.isWithin(currentView.intervalStart, currentView.intervalEnd)) {
-            header.disableButton('today');
+            //header.disableButton('today');
         }
         else {
             header.enableButton('today');
