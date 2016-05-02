@@ -663,7 +663,6 @@ function setCookie(cname, cvalue, exdays) {
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
-				console.log(element);
 				if (event.start.isBefore($('#calendar').fullCalendar('getDate'))){
 					element.css("color", "darkgray")
 				}
