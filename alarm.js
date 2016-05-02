@@ -6,8 +6,7 @@ $(function(){
         alarm = clock.find('.alarm'),
         ampm = clock.find('.ampm'),
         dialog = $('#alarm-dialog').parent(),
-        alarm_set = $('#alarm-set'),
-        alarm_clear = $('#alarm-clear');
+        alarm_set = $('#alarm-set');
 
     // Handle setting and clearing alamrs
 
@@ -32,11 +31,6 @@ $(function(){
             // bubbled up events from hiding the dialog
             dialog.trigger('hide');
         }
-    });
-
-    alarm_clear.click(function(){
-        location.reload();
-        // dialog.trigger('hide');
     });
 
     // Custom events to keep the code clean

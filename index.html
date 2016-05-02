@@ -535,14 +535,47 @@ function setCookie(cname, cvalue, exdays) {
             var dialog = $('#alarm-dialog').parent();
             dialog.trigger('hide');
 
-            status_list.push("alarm");
-            setCookie("status", JSON.stringify(status_list), 30);
+            var add = -1;
 
-            exercise_list.push(currentActivity);
-            setCookie("exercise", JSON.stringify(exercise_list), 30);
+            for (i = 0; i < exercise_list.length; i++) {
+                if (exercise_list[i] == currentActivity && status_list[i] == "alarm" && date_list[i] == calendarSelectedDay) {
+                    add = i;
+                }
+            }
 
-            date_list.push(calendarSelectedDay);
-            setCookie("date", JSON.stringify(date_list), 30);
+            if (add == -1) {
+                status_list.push("alarm");
+                exercise_list.push(currentActivity);
+                date_list.push(calendarSelectedDay);
+
+                setCookie("status", JSON.stringify(status_list), 30);
+                setCookie("exercise", JSON.stringify(exercise_list), 30);
+                setCookie("date", JSON.stringify(date_list), 30);
+            }
+
+            location.reload();
+        });
+
+        $('#alarm-clear').click(function() {
+            var add = -1;
+
+            for (i = 0; i < exercise_list.length; i++) {
+                if (exercise_list[i] == currentActivity && status_list[i] == "alarm" && date_list[i] == calendarSelectedDay) {
+                    add = i;
+                }
+            }
+
+            if (add != -1) {
+                status_list.splice(add);
+                exercise_list.splice(add);
+                date_list.splice(add);
+
+                setCookie("status", JSON.stringify(status_list), 30);
+                setCookie("exercise", JSON.stringify(exercise_list), 30);
+                setCookie("date", JSON.stringify(date_list), 30);
+            }
+
+            location.reload();
         });
 
         box = $("#chat_div").chatbox( {
@@ -635,24 +668,31 @@ function setCookie(cname, cvalue, exdays) {
             date_list = JSON.parse(date_list_str);
         }
 
-        var add = true;
+        var add = -1;
 
         for (i = 0; i < exercise_list.length; i++) {
             if (exercise_list[i] == exercise && status_list[i] == status && date_list[i] == sent_date) {
-                add = false;
+                add = i;
             }
         }
 
-        if (add) {
+        if (add != -1) {
             status_list.push(status);
-            setCookie("status", JSON.stringify(status_list), 30);
-
             exercise_list.push(exercise);
-            setCookie("exercise", JSON.stringify(exercise_list), 30);
-
             date_list.push(sent_date);
-            setCookie("date", JSON.stringify(date_list), 30);
+        } else {
+            status_list.splice(add);
+            exercise_list.splice(add);
+            date_list.splice(add);
         }
+
+        setCookie("current_status", "", 30);
+        setCookie("current_exercise", "", 30);
+        setCookie("current_date", "", 30);
+
+        setCookie("status", JSON.stringify(status_list), 30);
+        setCookie("exercise", JSON.stringify(exercise_list), 30);
+        setCookie("date", JSON.stringify(date_list), 30);
 
         $('#calendar').fullCalendar({
             header: {
