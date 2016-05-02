@@ -5,7 +5,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    border: 2px solid grey;
+    border-radius: 0px;
+    border: 1px solid grey;
 
 }
 
@@ -72,6 +73,7 @@
     width: 100%;
     float: left;
     clear: both;
+    vertical-align: center;
     white-space: pre-wrap;      /* CSS3 */
     white-space: -moz-pre-wrap; /* Firefox */
     white-space: -pre-wrap;     /* Opera <7 */
@@ -83,6 +85,7 @@
 .timestamp {
     display: relative;
     visibility: hidden;
+    vertical-align: center;
     color: grey;
     margin-top: 5px;
     float: right;
@@ -91,4 +94,5 @@
 
 .ui-chatbox-msg:hover .timestamp {
     visibility: visible;
+    vertical-align: center;
 }
