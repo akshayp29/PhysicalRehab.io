@@ -10,21 +10,22 @@
         box-sizing: border-box;
         margin: 0;
         font-family: "Ubuntu", sans-serif;
+        position:relative;
+
     }
 
     html, body {
         height: 100%;
+        background-color:#01A2A6;
     }
 
     body {
-        display: flex;
-        flex-direction: column;
+        display:block;
     }
 
     /* Website Heading */
     .page_title {
-        background-color: #40e0d0;
-        color: #ffffff;
+        background-color: #01A2A6;
         padding: 5px;
     }
 
@@ -33,37 +34,10 @@
         margin-left: 5px;
         margin-right: 0;
         font-weight: bold;
+        color:white;
         background: transparent;
         border: none;
         cursor: pointer;
-    }
-
-    /* Grid layout */
-    .top {
-        flex: 3;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .bottom {
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .top-left, .bottom-left {
-        position: relative;
-        flex: 3;
-    }
-
-    .bottom-left {
-        display: flex;
-    }
-
-    .top-right, .bottom-right {
-        position: relative;
-        flex: 1;
-        display: flex;
     }
 
     /* Exercise strip */
@@ -71,10 +45,10 @@
         flex: 1;
         height: 100%;
         width: 100%;
-        background:#A3CBE0;
-        border:2px solid #000;
+        background:#29D9C2;
+        /*border:2px solid #000;*/
         overflow-x: auto;
-        box-shadow:0 0 10px #000;
+        /*box-shadow:0 0 10px #000;*/
         position: absolute;
         display: flex;
         flex-flow: row;
@@ -87,7 +61,7 @@
         padding-left: 15px;
         padding-right: 15px;
         color: #fff!important;
-        background-color: #616161!important;
+        background-color: #01A2A6!important;
         margin: 16px!important;
         display: table;
     }
@@ -97,7 +71,7 @@
         text-align: center;
         margin-bottom: 5px;
         margin-top: 5px;
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .green {
@@ -251,14 +225,6 @@
     }
 
     /* Rewards */
-    .bottom-right {
-        background: #66C75B;
-        text-align: center;
-        border: 2px solid grey;
-        overflow: auto;
-        flex-direction: column;
-    }
-
     .rewards_heading {
         color: #ffffff;
         padding: 5px;
@@ -287,7 +253,7 @@
         left: 0;
         width: 3px;
         height: 35px;
-        background: green;
+        background: #01A2A6;
         transition: width 1s ease-in-out;
         border-radius: 5px;
     }
@@ -402,7 +368,7 @@
         background-image:-webkit-linear-gradient(top, #0043DE, #0043DE);
         background-image:-moz-linear-gradient(top, #0043DE, #0043DE);
         /*background-image:linear-gradient(top, #0043DE, #0043DE);*/
-        border-color:#002F9E;
+        /*border-color:#002F9E;*/
     }
 
     #alarm-dialog .close{
@@ -413,6 +379,50 @@
         top: -18px;
         right: -18px;
         cursor:pointer;
+    }
+
+    .row {
+        clear:both;
+        background-color:#ECF0F1;
+    }
+
+    .column {
+        height:100%;
+    }
+
+    .height1 {
+        height:10%;
+    }
+    .height6 {
+        height:70%;
+    }
+
+    .height3 {
+        height:20%;
+    }
+
+    .width9 {
+        width : 75%;
+        float : left;
+        display : block;
+        position:relative;
+    }
+
+    .width3 {
+        width : 25%;
+        float:left;
+        display:block;
+        position:relative;
+    }
+
+    .width12 {
+        width : 100%;
+    }
+
+    .rewards {
+        background: #476481;
+        text-align: center;
+        overflow: auto;
     }
 
 </style>
@@ -430,6 +440,30 @@
 <script src='fullcalendar.js'></script>
 <script src='alarm.js'></script>
 
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+</script>
+
 <script type="text/javascript">
 
 	var calendarSelectedDay = null;
@@ -442,25 +476,10 @@
 		$(".fc-day-number").filter("[data-date|='"+ date + "']").append("<img src='clock.png' style='vertical-align:middle; float: right;'>");
 	};
 
-    var getUrlParameter = function(param) {
-        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
-
-        for (i = 0; i < sURLVariables.length; i++) {
-            sParameterName = sURLVariables[i].split('=');
-
-            if (sParameterName[0] === param) {
-                return sParameterName[1] === undefined ? true : sParameterName[1];
-            }
-        }
-    };
-
     //call this to tick the rewards progress bar
-    function toggleRewards(date) {
+    function toggleRewards(date, num) {
         var number_of_exercises = getEventCount(date);
-        var percentage_progress = 1./number_of_exercises * 80.;
+        var percentage_progress = num/number_of_exercises * 80.;
         $(".rewards_progress").width(percentage_progress + "%");
     }
 
@@ -575,9 +594,54 @@
             }
         }
 
-        var status = getUrlParameter("status");
-        var exercise = getUrlParameter("exercise");
-        var date = getUrlParameter("date");
+        var status = getCookie("current_status");
+        var exercise = getCookie("current_exercise");
+        var sent_date = getCookie("current_date");
+
+        var status_list_str = getCookie("status");
+        var status_list;
+
+        if (!status_list_str) {
+            status_list = [];
+        } else {
+            status_list = JSON.parse(status_list_str);
+        }
+
+        if (status && status != "") {
+            status_list.push(status);
+            setCookie("status", JSON.stringify(status_list), 30);
+            setCookie("current_status", "");
+        }
+
+        var exercise_list_str = getCookie("exercise");
+        var exercise_list;
+
+        if (!exercise_list_str) {
+            exercise_list = [];
+        } else {
+            exercise_list = JSON.parse(exercise_list_str);
+        }
+
+        if (exercise && exercise != "") {
+            exercise_list.push(exercise);
+            setCookie("exercise", JSON.stringify(exercise_list), 30);
+            setCookie("current_exercise", "");
+        }
+
+        var date_list_str = getCookie("date");
+        var date_list;
+
+        if (!date_list_str) {
+            date_list = [];
+        } else {
+            date_list = JSON.parse(date_list_str);
+        }
+
+        if (sent_date && sent_date != "") {
+            date_list.push(sent_date);
+            setCookie("date", JSON.stringify(date_list), 30);
+            setCookie("current_date", "");
+        }
 
         $('#calendar').fullCalendar({
             header: {
@@ -594,7 +658,8 @@
             eventClick: function(calEvent, jsEvent, view) {
                 $('#calendar').fullCalendar('select', calEvent.start);
 				var map = {"Tree pose":"tree.html", "Jumping Jacks":"jumping_jacks.html"}
-				location.href= map[calEvent.title] + '?date=' + calendarSelectedDay;
+                setCookie('current_date', calendarSelectedDay, 30);
+				location.href= map[calEvent.title];
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
@@ -612,18 +677,31 @@
                     $('#jumping_jacks_card').css("display", "table");
                 }
 
-                if (calendarSelectedDay != date) {
-                    $('#' + exercise + '_card').css('opacity', '1');
-                    $('#' + exercise + '_card').find('p').css('color', 'white');
-                } else {
-                    if (status && exercise) {
-                        if (status == "check") {
-                            $('#' + exercise + '_card').css('opacity', '0.4');
-                        } else if (status == "flag") {
-                            $('#' + exercise + '_card').find('p').css('color', 'orange');
+                if (calendarSelectedDay.substring(0, 7) != '2016-04' && calendarSelectedDay.substring(0, 7) != '2016-05') {
+                    $('#tree_card').css("display", "none");
+                    $('#jumping_jacks_card').css("display", "none");
+                }
+
+                $('#tree_card').css('opacity', '1');
+                $('#tree_card').find('p').css('color', 'white');
+
+                $('#jumping_jacks_card').css('opacity', '1');
+                $('#jumping_jacks_card').find('p').css('color', 'white');
+
+                var num = 0.;
+
+                for (i = 0; i < date_list.length; i++) {
+                    if (date_list[i] == calendarSelectedDay) {
+                        if (status_list[i] == "flag") {
+                            $('#' + exercise_list[i] + '_card').find('p').css('color', 'orange');
+                        } else if (status_list[i] == "check") {
+                            num += 1.;
+                            $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
                         }
                     }
                 }
+
+                toggleRewards(calendarSelectedDay, num);
 			},
 			unselect: function(view, jsEvent){
 
@@ -637,15 +715,14 @@
 
 		calendarSelectedDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
 
-        if (status && exercise) {
-            if (status == "check") {
-                setEventTextColor(date, exercise, "darkgray");
-                toggleRewards(date);
-                $('#' + exercise + '_card').css('opacity', '0.4');
-            } else if (status == "flag") {
-                setEventTextColor(date, exercise, "red")
-                flagDate(date);
-                $('#' + exercise + '_card').find('p').css('color', 'orange');
+        for (i = 0; i < date_list.length; i++) {
+            if (status_list[i] == "flag") {
+                setEventTextColor(date_list[i], exercise_list[i], "red")
+                flagDate(date_list[i]);
+                $('#' + exercise_list[i] + '_card').find('p').css('color', 'orange');
+            } else if (status_list[i] == "check") {
+                setEventTextColor(date_list[i], exercise_list[i], "darkgray");
+                $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
             }
         }
 
@@ -653,7 +730,11 @@
 			$('#calendar').fullCalendar('select', $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD'));
 		});
 
-		$('#calendar').fullCalendar('select', date);
+        if (sent_date && sent_date != "") {
+    		$('#calendar').fullCalendar('select', sent_date);
+        } else {
+            $('#calendar').fullCalendar('select', calendarSelectedDay);
+        }
     });
 
 </script>
@@ -677,52 +758,56 @@
 </div>
 
 <div class="page_title" height="100%">
-    <button class="page_title_text" onclick="location.href='index.html'">PhysicalRehab.io</button>
+    <button class="page_title_text height1" onclick="location.href='index.html'">PhysicalRehab.io</button>
 </div>
 
-<div class="top">
-    <div id="calendar" class="top-left" style="background: #F2F2F2">
+<div class="row height6">
+    <div id="calendar-wrapper" class="column width9" style="padding:10px;">
+        <div id="calendar" style="height:100%"> <!--style="background: #F2F2F2">-->
+            <!-- ???? -->
+        </div>
     </div>
 
-    <div id="messages" class="top-right">
+    <div id="messages" class="column width3">
         <div id="chat_div"></div>
     </div>
+
 </div>
 
-<div class="bottom">
+<div class="row height3">
 
-    <div class="bottom-left">
+    <div class="column width9">
         <div id="scroll">
             <div id="jumping_jacks_card" class="card">
-                <p class="card_heading" onclick="location.href='jumping_jacks.html?date='+calendarSelectedDay; return false;">Jumping Jacks</p>
+                <p class="card_heading" onclick="location.href='jumping_jacks.html'; setCookie('current_date', calendarSelectedDay, 30);">Jumping Jacks</p>
                 <div class="buttons">
                     <input id="jumping_jacks_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
-                        <a title="Complete?" href="index.html?status=check&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+                        <a title="Complete?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'check', 30); setCookie('current_exercise', 'jumping_jacks', 30);" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a title="Having trouble?" href="index.html?status=flag&exercise=jumping_jacks" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+                        <a title="Having trouble?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'flag', 30); setCookie('current_exercise', 'jumping_jacks', 30);" class="button-flag"></a>
                     </div>
                 </div>
             </div>
 
             <div id="tree_card" class="card">
-                <p class="card_heading" onclick="location.href='tree.html?date='+calendarSelectedDay; return false;">Tree Pose</p>
+                <p class="card_heading" onclick="location.href='tree.html'; setCookie('current_date', calendarSelectedDay, 30);">Tree Pose</p>
                 <div class="buttons">
                     <input id="tree_alarm" class="alarm-button" type="image" src="alarm.png" height="36" width="36">
                     <div class="check">
-                        <a title="Complete?" href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+                        <a title="Complete?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'check', 30); setCookie('current_exercise', 'tree', 30);" class="button-check"></a>
                     </div>
                     <div class="flag">
-                        <a title="Having trouble?" href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+                        <a title="Having trouble?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'flag', 30); setCookie('current_exercise', 'tree', 30);" class="button-flag"></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="bottom-right">
-        <div class="rewards_heading">Progress</div>
+    <div class="column width3 rewards">
+        <div class="rewards_heading">Daily Progress</div>
         <div class="rewards_bar">
             <div class="rewards_background"></div>
             <div class="rewards_progress"></div>

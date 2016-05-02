@@ -15,26 +15,36 @@
 <script src='moment.js'></script>
 <script src='fullcalendar.js'></script>
 
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+</script>
+
 <script type="text/javascript">
 
     var hasStarted = false;
     var time_remaining;
     var timeInterval;
-
-    var getUrlParameter = function(param) {
-        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-            sURLVariables = sPageURL.split('&'),
-            sParameterName,
-            i;
-
-        for (i = 0; i < sURLVariables.length; i++) {
-            sParameterName = sURLVariables[i].split('=');
-
-            if (sParameterName[0] === param) {
-                return sParameterName[1] === undefined ? true : sParameterName[1];
-            }
-        }
-    };
 
     function sendMessageDocToPatient(name, message, timestamp) {
         $("#chat_div").chatbox("option", "boxManager").addMsg(name, message, timestamp);
@@ -90,7 +100,7 @@
     $(document).ready(function() {
         var numberOfMessages = 0;
 
-        calendarSelectedDay = getUrlParameter("date");
+        calendarSelectedDay = getCookie("current_date");
 
         box = $("#chat_div").chatbox( {
             id:"Me",
@@ -205,11 +215,11 @@
     </div>
 
     <div class="check">
-        <a title="Complete?" href="index.html?status=check&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-check"></a>
+        <a title="Complete?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'check', 30); setCookie('current_exercise', 'tree', 30);" class="button-check"></a>
     </div>
 
     <div class="flag">
-        <a title="Having trouble?" href="index.html?status=flag&exercise=tree" onclick="location.href=this.href+'&date='+calendarSelectedDay; return false;" class="button-flag"></a>
+        <a title="Having trouble?" href="index.html" onclick="setCookie('current_date', calendarSelectedDay, 30); setCookie('current_status', 'flag', 30); setCookie('current_exercise', 'tree', 30);" class="button-flag"></a>
     </div>
 </div>
 
