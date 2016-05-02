@@ -67,32 +67,37 @@
     border-color: #6699FF;
 }
 
+.container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .ui-chatbox-msg {
-    display: absolute;
     margin-top: 10px;
-    width: 100%;
-    float: left;
+    margin-right: 5px;
+    width: 50%;
     clear: both;
-    vertical-align: center;
     white-space: pre-wrap;      /* CSS3 */
     white-space: -moz-pre-wrap; /* Firefox */
     white-space: -pre-wrap;     /* Opera <7 */
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
     font-size: 12px;
+    flex: 1;
 }
 
 .timestamp {
-    display: relative;
     visibility: hidden;
-    vertical-align: center;
     color: grey;
-    margin-top: 5px;
-    float: right;
+    margin-left: auto;
+    margin-top: 10px;
     font-size: 13px;
 }
 
-.ui-chatbox-msg:hover .timestamp {
+.container:hover .timestamp {
     visibility: visible;
-    vertical-align: center;
 }

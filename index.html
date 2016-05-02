@@ -229,6 +229,7 @@
         color: #ffffff;
         padding: 5px;
         margin-top: 5%;
+        margin-bottom: 15px;
         flex: 1;
         font-size: 22px;
     }
@@ -236,6 +237,7 @@
     .rewards_bar {
         position: relative;
         flex: 2;
+        margin-bottom: 15px;
     }
 
     .rewards_background {
@@ -533,9 +535,14 @@ function setCookie(cname, cvalue, exdays) {
             var dialog = $('#alarm-dialog').parent();
             dialog.trigger('hide');
 
-            notifyDate(calendarSelectedDay);
-            setEventTextColor(calendarSelectedDay, currentActivity, "#EBCA3A");
-            $('#' + currentActivity + '_card').find('p').css('color', '#EBCA3A');
+            status_list.push("alarm");
+            setCookie("status", JSON.stringify(status_list), 30);
+
+            exercise_list.push(currentActivity);
+            setCookie("exercise", JSON.stringify(exercise_list), 30);
+
+            date_list.push(calendarSelectedDay);
+            setCookie("date", JSON.stringify(date_list), 30);
         });
 
         box = $("#chat_div").chatbox( {
@@ -604,20 +611,17 @@ function setCookie(cname, cvalue, exdays) {
         var status_list_str = getCookie("status");
         var status_list;
 
+        var exercise_list_str = getCookie("exercise");
+        var exercise_list;
+
+        var date_list_str = getCookie("date");
+        var date_list;
+
         if (!status_list_str) {
             status_list = [];
         } else {
             status_list = JSON.parse(status_list_str);
         }
-
-        if (status && status != "") {
-            status_list.push(status);
-            setCookie("status", JSON.stringify(status_list), 30);
-            setCookie("current_status", "");
-        }
-
-        var exercise_list_str = getCookie("exercise");
-        var exercise_list;
 
         if (!exercise_list_str) {
             exercise_list = [];
@@ -625,25 +629,29 @@ function setCookie(cname, cvalue, exdays) {
             exercise_list = JSON.parse(exercise_list_str);
         }
 
-        if (exercise && exercise != "") {
-            exercise_list.push(exercise);
-            setCookie("exercise", JSON.stringify(exercise_list), 30);
-            setCookie("current_exercise", "");
-        }
-
-        var date_list_str = getCookie("date");
-        var date_list;
-
         if (!date_list_str) {
             date_list = [];
         } else {
             date_list = JSON.parse(date_list_str);
         }
 
-        if (sent_date && sent_date != "") {
+        var add = true;
+
+        for (i = 0; i < exercise_list.length; i++) {
+            if (exercise_list[i] == exercise && status_list[i] == status && date_list[i] == sent_date) {
+                add = false;
+            }
+        }
+
+        if (add) {
+            status_list.push(status);
+            setCookie("status", JSON.stringify(status_list), 30);
+
+            exercise_list.push(exercise);
+            setCookie("exercise", JSON.stringify(exercise_list), 30);
+
             date_list.push(sent_date);
             setCookie("date", JSON.stringify(date_list), 30);
-            setCookie("current_date", "");
         }
 
         $('#calendar').fullCalendar({
@@ -674,8 +682,10 @@ function setCookie(cname, cvalue, exdays) {
 				calendarSelectedDay = start.format('YYYY-MM-DD');
                 var dateNum = parseInt(getDate(calendarSelectedDay));
                 if (dateNum % 2 == 0) {
+                    $('#tree_card').css("display", "table");
                     $('#jumping_jacks_card').css("display", "none");
                 } else {
+                    $('#tree_card').css("display", "table");
                     $('#jumping_jacks_card').css("display", "table");
                 }
 
@@ -699,6 +709,8 @@ function setCookie(cname, cvalue, exdays) {
                         } else if (status_list[i] == "check") {
                             num += 1.;
                             $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
+                        } else if (status_list[i] == "alarm") {
+                            $('#' + exercise_list[i] + '_card').find('p').css('color', '#EBCA3A');
                         }
                     }
                 }
@@ -725,6 +737,10 @@ function setCookie(cname, cvalue, exdays) {
             } else if (status_list[i] == "check") {
                 setEventTextColor(date_list[i], exercise_list[i], "darkgray");
                 $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
+            } else if (status_list[i] == "alarm") {
+                notifyDate(calendarSelectedDay);
+                setEventTextColor(calendarSelectedDay, currentActivity, "#EBCA3A");
+                $('#' + exercise_list[i] + '_card').find('p').css('color', '#EBCA3A');
             }
         }
 

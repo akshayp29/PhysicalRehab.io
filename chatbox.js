@@ -20,7 +20,13 @@
                     var self = this;
                     var box = self.elem.uiChatboxLog;
                     var e = document.createElement('div');
-                    box.append(e);
+
+                    var container = document.createElement("div");
+                    $(container).addClass("container");
+
+                    box.append(container);
+                    container.appendChild(e);
+
                     $(e).hide();
 
                     var systemMessage = false;
@@ -41,11 +47,11 @@
                     var timestamp = document.createElement("div");
                     $(timestamp).addClass("timestamp");
                     $(timestamp).text(time_sent);
-                    e.appendChild(timestamp);
+                    container.appendChild(timestamp);
 
                     $(e).addClass("ui-chatbox-msg");
                     $(e).css("fontSize", "16px");
-                    $(e).css("maxWidth", $(box).width());
+                    // $(e).css("maxWidth", $(box).width() - 30);
                     $(e).fadeIn();
                     self._scrollToBottom();
 
