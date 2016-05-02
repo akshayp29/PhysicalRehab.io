@@ -587,6 +587,7 @@
             },
             height: $('#calendar').height(),
             events: cannedEvents,
+			eventColor: '#669090',
             dayClick: function(date, jsEvent, view){
                 $('#calendar').fullCalendar('select', date);
             },
@@ -597,6 +598,7 @@
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
+				console.log(element);
 				if (event.start.isBefore($('#calendar').fullCalendar('getDate'))){
 					element.css("color", "darkgray")
 				}

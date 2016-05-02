@@ -524,7 +524,7 @@ temporary rendered events).
 .ui-widget .fc-event {
 	color: darkblue; /* default TEXT color */
 	text-decoration: none; /* if <a> has an href */
-	
+	cursor: pointer;
 }
 
 .fc-event[href],
@@ -542,15 +542,18 @@ temporary rendered events).
 	background: #fff;
 	opacity: .25;
 	filter: alpha(opacity=25); /* for IE */
+	
 }
 
 .fc-event .fc-content {
 	position: relative;
 	z-index: 2;
+	background: #ddf0f0;
+	border-radius: 7px;
 }
 
 .fc-title {
-	cursor: pointer;
+	padding-left: 5px;
 }
 
 .fc-event .fc-resizer {
