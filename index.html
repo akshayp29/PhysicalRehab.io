@@ -553,6 +553,8 @@ function setCookie(cname, cvalue, exdays) {
                 setCookie("date", JSON.stringify(date_list), 30);
             }
 
+            console.log(exercise_list);
+
             location.reload();
         });
 
@@ -566,9 +568,9 @@ function setCookie(cname, cvalue, exdays) {
             }
 
             if (add != -1) {
-                status_list.splice(add);
-                exercise_list.splice(add);
-                date_list.splice(add);
+                status_list.splice(add, 1);
+                exercise_list.splice(add, 1);
+                date_list.splice(add, 1);
 
                 setCookie("status", JSON.stringify(status_list), 30);
                 setCookie("exercise", JSON.stringify(exercise_list), 30);
@@ -676,15 +678,17 @@ function setCookie(cname, cvalue, exdays) {
             }
         }
 
-        if (add != -1) {
+        if (add == -1) {
             status_list.push(status);
             exercise_list.push(exercise);
             date_list.push(sent_date);
-        } else {
-            status_list.splice(add);
-            exercise_list.splice(add);
-            date_list.splice(add);
+        } else if (status != "") {
+            status_list.splice(add, 1);
+            exercise_list.splice(add, 1);
+            date_list.splice(add, 1);
         }
+
+        console.log(exercise_list);
 
         setCookie("current_status", "", 30);
         setCookie("current_exercise", "", 30);
@@ -714,9 +718,9 @@ function setCookie(cname, cvalue, exdays) {
             },
 			eventRender: function(event, element) {
 				element.css("color", event.nonDefaultColor);
-				if (event.start.isBefore($('#calendar').fullCalendar('getDate'))){
-					element.css("color", "darkgray")
-				}
+				// if (event.start.isBefore($('#calendar').fullCalendar('getDate'))){
+				// 	element.css("color", "darkgray")
+				// }
 			},
 			select: function(start, end, jsEvent, view) {
 				calendarSelectedDay = start.format('YYYY-MM-DD');
@@ -778,8 +782,8 @@ function setCookie(cname, cvalue, exdays) {
                 setEventTextColor(date_list[i], exercise_list[i], "darkgray");
                 $('#' + exercise_list[i] + '_card').css('opacity', '0.4');
             } else if (status_list[i] == "alarm") {
-                notifyDate(calendarSelectedDay);
-                setEventTextColor(calendarSelectedDay, currentActivity, "#EBCA3A");
+                notifyDate(date_list[i]);
+                setEventTextColor(date_list[i], exercise_list[i], "#EBCA3A");
                 $('#' + exercise_list[i] + '_card').find('p').css('color', '#EBCA3A');
             }
         }

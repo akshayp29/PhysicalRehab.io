@@ -8,8 +8,7 @@ $(function(){
         dialog = $('#alarm-dialog').parent(),
         alarm_set = $('#alarm-set');
 
-    // Handle setting and clearing alamrs
-
+    // Handle setting and clearing alarms
     $('.alarm-button').click(function(){
 
         // Show the dialog
